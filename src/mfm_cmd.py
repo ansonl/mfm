@@ -20,8 +20,7 @@ TEMP_OUTPUT_GCODE_FILE = 'mfm-output.gcode'
 # Slicer Post-processing Scripts (windows) (put project folder in user home folder)
 #"C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\python3.11.exe" "C:\Users\USERNAME\topo-map-post-processing\src\mfm_cmd.py" -c "C:\Users\USERNAME\topo-map-post-processing\sample_models\dual_color_dice\config-dice-test.json" -t "C:\Users\USERNAME\topo-map-post-processing\minimal_toolchanges\bambu-p1-series.gcode";
 
-if __name__ == "__main__":
-
+def setupLogging():
     redirectSTDERR = open(os.path.join(os.path.expanduser('~'), 'mfm-script-stderr.log'), "w")
     sys.stderr.write = redirectSTDERR.write
 
@@ -44,6 +43,8 @@ if __name__ == "__main__":
         print(f"Failed to create log file: {e}")
 
     logging.info(f"Logging started")
+
+def runScript():
 
     # Set up status queue
     statusQueue: queue.Queue[StatusQueueItem] = queue.Queue()
@@ -71,6 +72,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', required=True, help='Options configuration JSON file')
     parser.add_argument('-t', '--toolchange', required=True, help='Toolchange G-code file')
     parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT, LineEndingCommandLineParameter.WINDOWS, LineEndingCommandLineParameter.UNIX], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
+    parser.add_argument('--disable', type=int, choices=[0,1], default=0, help='Disable post processing')
     
     args =  parser.parse_args()
     logging.info(f'Parsed args {args}')
@@ -80,6 +82,7 @@ if __name__ == "__main__":
     configFile = args.config
     toolchangeFile = args.toolchange
     lineEndingFlavor = args.le
+    disable = args.disable
     
     if outputGcodeFile == None:     
         outputGcodeFile = TEMP_OUTPUT_GCODE_FILE
@@ -123,6 +126,12 @@ if __name__ == "__main__":
             status = f"Defaulting to {LINE_ENDING_UNIX_TITLE}"
             logging.warning(status)
 
+    if disable == 1:
+        status = "Script skipping because --disable flag was 1. "
+        print(status)
+        logging.info(status)
+        return
+
     # Create config dict that is sent to process loop
     mfmConfig = MFMConfiguration()
     mfmConfig[CONFIG_GCODE_FLAVOR] = MARLIN_2_BAMBU_PRUSA_MARKED_GCODE
@@ -145,3 +154,8 @@ if __name__ == "__main__":
         shutil.move(TEMP_OUTPUT_GCODE_FILE, inputGcodeFile)
         status = f'Moved temp output G-code to {inputGcodeFile}\n'
         logging.info(status)
+
+if __name__ == "__main__":
+
+    setupLogging()
+    runScript()
