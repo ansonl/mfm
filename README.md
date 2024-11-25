@@ -4,7 +4,7 @@
 
 Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/wiki/Contour_line) and recolor [elevation ranges](https://desktop.arcgis.com/en/arcmap/latest/map/styles-and-symbols/working-with-color-ramps.htm) to [3D printable map models](https://ansonliu.com/maps/). **3D G-code Map Feature Modifier (MFM)** is a G-code Post Processor made for 3D topo map models but any 3D model can be recolored with 2 additional colors.
 
-Use the latest version of MFM in 1 of 3 ways
+Use the latest version of MFM in 1 of 3 ways → [Getting Started](#getting-started)
 
 - [Integrated Post Processing Script in PrusaSlicer/Bambu Studio/Orca Slicer](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code. Runs automatically after slicing.
 - [Python script](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code.
