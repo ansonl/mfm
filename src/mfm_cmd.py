@@ -14,6 +14,12 @@ TEMP_OUTPUT_GCODE_FILE = 'mfm-output.gcode'
 
 #python ./src/mfm_cmd.py "C:\Users\ansonl\Downloads\Die and Dots_PLA_3h21m.gcode" -o dice-export.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
 
+# Mac Slicer Post processing
+#/usr/local/bin/python3 ~/development/topo-map-post-processing/src/mfm_cmd.py ~/development/topo-map-post-processing/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ~/development/topo-map-post-processing/sample_models/dual_color_dice/config-dice-test.json -t ~/development/topo-map-post-processing/minimal_toolchanges/bambu-p1-series.gcode
+
+# Mac Slicer Post processing (general)
+#python3 ~/src/mfm_cmd.py ~/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
+
 # Slicer Post-processing Scripts (general)
 #"PYTHONPATH/python3.11.exe" "SCRIPTPATH/mfm_cmd.py" -c "OPTIONSPATH/options.json" -t "TOOLCHANGEPATH/toolchange.gcode";
 
@@ -71,7 +77,7 @@ def runScript():
     parser.add_argument('-o', '--output_gcode', help='Output G-code file. Overwrite Input G-code file if no output provided.')
     parser.add_argument('-c', '--config', required=True, help='Options configuration JSON file')
     parser.add_argument('-t', '--toolchange', required=True, help='Toolchange G-code file')
-    parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT, LineEndingCommandLineParameter.WINDOWS, LineEndingCommandLineParameter.UNIX], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
+    parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT.value, LineEndingCommandLineParameter.WINDOWS.value, LineEndingCommandLineParameter.UNIX.value], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
     parser.add_argument('--disable', type=int, choices=[0,1], default=0, help='Disable post processing')
     
     args =  parser.parse_args()

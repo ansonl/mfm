@@ -94,6 +94,8 @@ If you plan to do the processing through the standalone MFM GUI app, you can ski
 
 1. Print Settings > Output options > **Post-processing scripts**
 
+![PrusaSlicer postprocessing script printer setting option](assets/prusaslicer-post-processing-script-option.png)
+
 ### Bambu Studio / Orca Slicer
 
 1. Enable **Advanced** view for Process
@@ -102,34 +104,6 @@ If you plan to do the processing through the standalone MFM GUI app, you can ski
 
 ### Next Steps for All Slicers
 
-3. Add the below text to **Post-processing scripts**
+3. Create the MFM command text as described in [MFM Command Setup](terminal-setup.md)
 
-```sh
-"PYTHONPATH/python3.exe" "SCRIPTPATH/mfm_cmd.py" -c "OPTIONSPATH/options.json" -t "TOOLCHANGEPATH/toolchange.gcode";
-```
-
-Command structure:
-
- - `PYTHONPATH` is the location of your [Python](https://python.org) installation. This is the folder that the Python executable is in. You may need to change `python3.exe` to match your Python name.
-
-  - `SCRIPTPATH` is the location of all the files in the `src` directory.
-
-  - `OPTIONSPATH` is the location of your Options JSON file. Change `options.json` to the options file name.
-
-  - `TOOLCHANGEPATH` is the location of your Minimal Toolchange G-code file. Change `toolchange.json` to the toolchange filename.
-
-#### Windows command example
-
-Put the downloaded project folder in your user home folder. Replace `USERNAME` with your username.
-
-```sh
-"C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\python3.exe" "C:\Users\USERNAME\mfm\src\mfm_cmd.py" -c "C:\Users\USERNAME\mfm\premade_options\USAofPlastic-meters.json" -t "C:\Users\USERNAME\mfm\minimal_toolchanges\bambu-p1-series.gcode";
-```
-
-#### Linux / Mac command example
-
-Put the downloaded project folder in your user home folder.
-
-```sh
-python3 "~/mfm/src/mfm_cmd.py" -c "~/mfm/premade_options/USAofPlastic-meters.json" -t "~/mfm/minimal_toolchanges/bambu-p1-series.gcode";
-```
+4. Add the final command text to **Post-processing scripts** 

@@ -4,9 +4,11 @@
 
 Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/wiki/Contour_line) and recolor [elevation ranges](https://desktop.arcgis.com/en/arcmap/latest/map/styles-and-symbols/working-with-color-ramps.htm) to [3D printable map models](https://ansonliu.com/maps/). **3D G-code Map Feature Modifier (MFM)** is a G-code Post Processor made for 3D topo map models but any 3D model can be recolored with 2 additional colors.
 
-Use the latest version of MFM in 1 of 2 ways
-- [PrusaSlicer/Bambu Studio/Orca Slicer plugin](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) (preferred)
-- [GUI](https://github.com/ansonl/mfm/releases) 
+Use the latest version of MFM in 1 of 3 ways
+
+- [Integrated Post Processing Script in PrusaSlicer/Bambu Studio/Orca Slicer](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code. Runs automatically after slicing.
+- [Python script](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code.
+- [GUI](https://github.com/ansonl/mfm/releases) - Portable graphical interface.
 
 MFM adds additional features to the model by post processing sliced [3D printer G-code](https://marlinfw.org/meta/gcode/). 3D models and printing g-code can be recolored at either layer or individual feature/line level granularity.
 
@@ -47,23 +49,21 @@ Set up your slicer and printer for MFM by following the steps on each page below
 
 1. [Slicer Setup](slicer-setup.md)
 
-2. [Options](configuration-setup.md)
+2. [MFM Command Setup](terminal-setup.md) (not needed for GUI)
 
-3. [Minimal Toolchange G-code](minimal-toolchange-gcode.md)
+3. [Options](configuration-setup.md)
 
-4. [Printer Setup](printer-setup.md)
+4. [Minimal Toolchange G-code](minimal-toolchange-gcode.md)
+
+5. [Printer Setup](printer-setup.md)
 
 ## Running MFM Post-processor
 
-After following all above setup steps, you can run MFM as a Slicer Post-processor Script (most updated) or Graphical App:
+After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Script/Python Script (most updated) or Graphical App:
 
-### Slicer Post-processor Script or Command Line
+### Slicer Post-processor Script or Python Script in Command Line
 
-Download the [current code of MFM](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) and extract the entire folder to a location such as your user home directory. 
-
-Setup your slicer as described in [Slicer Setup > Set Post-processing Scripts](./slicer-setup.md).
-
-1. Add `mfm_cmd.py` with the listed parameters to slicer **Post-processing Scripts** setting.
+1. Add `mfm_cmd.py` command with the [listed parameters](terminal-setup.md) to slicer **Post-processing Scripts** setting.
 
 2. **Slice** your model.
 
@@ -83,9 +83,9 @@ Download the [latest GUI release of MFM](https://github.com/ansonl/mfm/releases)
 
 4. Check if the export G-code file location looks right
 
-5. Press *Post Process*
+5. Press **Post Process**
 
-> If a release of MFM has not been built for your OS, you can [download](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) this repo, navigate to it in the command line and run `python src/gui.py`.
+> If a release of MFM has not been built for your OS, you can launch the GUI by [downloading the code](https://github.com/ansonl/mfm/archive/refs/heads/master.zip), navigate to the code folder in the command line and run `python src/gui.py`.
 
 ### Printing the G-code file
 
@@ -93,9 +93,9 @@ Put the G-code file exported by your Slicer or MFM on an SD card and put the SD 
 
 Bambu printer users can use [FTPS](https://forum.bambulab.com/t/we-can-now-connect-to-ftp-on-the-p1-and-a1-series/6464) for wireless transfer.
 
-## Frequent Issues
+## Frequently Asked Questions
 
-| 🚧 Issue | Solution |
+| Question | Solution |
 | --- | --- |
 | How do I convert a 3D model into G-code for printing? | After importing and slicing your model in a slicer software, export the 3D printer commands as [ASCII] G-code. MFM can be process and recolor this saved G-code file. |
 | MFM did not add or change any colors. | Setup your slicer for MFM through [Slicer Setup](slicer-setup.md) |
@@ -110,12 +110,12 @@ Bambu printer users can use [FTPS](https://forum.bambulab.com/t/we-can-now-conne
 
 Open an issue on Github. Please note the OS, Slicer, printer, and provide the 3D model, MFM Options JSON, toolchange G-code, and logs. 
 
-Logs are written to the `~` home directory in the files `mfm-script.log` and `mfm-script-stdout.log`.
+Logs are written to your home directory `~` in the files `mfm-script.log` and `mfm-script-stderr.log`.
 
 ## License and Disclaimer
 
 GNU AFFERO GENERAL PUBLIC LICENSE v3.0
 
-Copyright © 2023 Anson Liu
+Copyright © 2023-2024 Anson Liu
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
