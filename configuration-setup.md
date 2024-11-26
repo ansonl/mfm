@@ -10,12 +10,12 @@ Options values are provided for each [3D printable map model](https://ansonliu.c
 
 You can test configurations with the sample dual color dice G-code files in the `sample_models` folder. 
 
-Filament/color positions are 0-based. The first position is represented by 0. The recommended filament order is:
+Filament/color positions are 0-based. The first position is represented by `0`. The recommended filament order is:
 
 | Physical Position (left to right) → | 1 | 2 | 3 | 4 |
 | -------- | ------- | ------- | ------- | ------ |
-| 0-based index in options | `0` | `1` | `2` | `3` |
-| **Purpose** | Primary (base) | Secondary (hydro) | *Isoline* | *Elevation Color Change* |
+| 0-based tool index in software | `0` | `1` | `2` | `3` |
+| **Purpose** | Primary (base) | Secondary (hydro) | *Isoline (contour line)* | *Elevation Color Change* |
 
 ### Example Options file with Isoline and Elevation Change features
 

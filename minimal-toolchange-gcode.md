@@ -12,7 +12,8 @@ Premade minimal toolchange files can be downloaded from the [`minimal_toolchange
 
 Current premade printer toolchanges:
 
-- Generic (firmware managed tool change)
+- Generic (firmware managed tool change with `T`)
+- Generic Manual (manual filament swap, requires `M600` filament change support in firmware)
 - Bambu X1 series
 - Bambu P1 series
 - Bambu A1
