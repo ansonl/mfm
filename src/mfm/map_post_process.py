@@ -285,6 +285,7 @@ def reorderFeatures(ps: PrintState):
       featureIdx += 1
   
   # move all colors that match the previous printing color to front if previous layer end printing color was not the periodic color
+  # TODO: This moves internal features to be printed first which cuts toolchanges by 50% but may have unstable features as a result. We assume that a toolchange is more disruptive than changing feature print order.
   insertIdx = 0
   featureIdx = 0
   while featureIdx < len(ps.features):
