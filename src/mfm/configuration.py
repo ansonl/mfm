@@ -85,7 +85,7 @@ def createIsoline(modelToRealWorldDefaultUnits: float, modelOneToNVerticalScale:
 def createReplacementColor(modelToRealWorldDefaultUnits: float, modelOneToNVerticalScale: float, modelSeaLevelBaseThickness: float, realWorldElevationStart: float, realWorldElevationEnd: float, colorIndex: int, originalColorIndex: int):
   return ReplacementColorAtHeight(colorIndex=colorIndex, originalColorIndex=originalColorIndex, startHeight=modelSeaLevelBaseThickness + modelToRealWorldDefaultUnits*realWorldElevationStart/modelOneToNVerticalScale, endHeight=modelSeaLevelBaseThickness + modelToRealWorldDefaultUnits*realWorldElevationEnd/modelOneToNVerticalScale)
 
-def parsePeriodicColors(userOptions: dict) -> list[PeriodicColor] | bool:
+def parsePeriodicColors(userOptions: dict) -> list[PeriodicColor]:
   periodicColors: list[PeriodicColor] = []
   if all (opt in userOptions for opt in periodicColorRequiredOptions):
     periodicColors.append(
@@ -104,7 +104,7 @@ def parsePeriodicColors(userOptions: dict) -> list[PeriodicColor] | bool:
     print("Added isoline based on options")
   return periodicColors
 
-def parseReplacementColors(userOptions: dict) -> list[ReplacementColorAtHeight] | bool:
+def parseReplacementColors(userOptions: dict) -> list[ReplacementColorAtHeight]:
   replacementColors: list[ReplacementColorAtHeight] = []
   if all (opt in userOptions for opt in replacementColorRequiredOptions):
     replacementColors.append(

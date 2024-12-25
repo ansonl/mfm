@@ -269,10 +269,11 @@ def findLayerFeatures(f: typing.TextIO, gf: str, printState: PrintState, pcs: li
 
 def reorderFeatures(ps: PrintState):
   #Debug breakpoint before layer feature cataloging
-  if ps.height == 12.0:
+  if ps.height == 2.2:
     0==0
 
   #rearrange features
+  # move all periodic color features to front
   if ps.isPeriodicLine:
     insertIdx = 0
     featureIdx = 0
@@ -282,6 +283,22 @@ def reorderFeatures(ps: PrintState):
           ps.features.insert(insertIdx, ps.features.pop(featureIdx))
         insertIdx += 1
       featureIdx += 1
+  
+  # move all colors that match the previous printing color to front if previous layer end printing color was not the periodic color
+  insertIdx = 0
+  featureIdx = 0
+  while featureIdx < len(ps.features):
+    if ps.features[featureIdx].isPeriodicColor:
+      if ps.features[featureIdx].printingColor == ps.printingColor: # no more rearranging if we discover that previous layer end printing color is equal to periodic color that was previously rearranged to front
+        break
+      else: # skip this feature and keep looking if periodic color is not the previous layer end color
+        featureIdx += 1
+        continue
+    if ps.features[featureIdx].originalColor == ps.printingColor:
+      if insertIdx != featureIdx:
+        ps.features.insert(insertIdx, ps.features.pop(featureIdx))
+      insertIdx += 1
+    featureIdx += 1
 
   for feat in ps.features:
     ps.stopPositions.append(feat.start)
@@ -313,7 +330,7 @@ def reorderFeatures(ps: PrintState):
       print(f"wipeEnd.start: {feat.wipeEnd.start}")
   
   #Debug breakpoint after layer feature cataloging
-  if ps.height == 7.8:
+  if ps.height == 2.2:
     0==0
 
 def checkAndInsertToolchange(ps: PrintState, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor]) -> ToolchangeType:
@@ -491,7 +508,7 @@ def updatePrintState(ps: PrintState, cl: str, sw: bool, cp: int):
     if ps.height == -1:
       ps.originalColor = int(toolchangeMatch.groups()[0])
     if sw == False:
-      ps.printingColor = ps.originalColor
+      ps.printingColor = int(toolchangeMatch.groups()[0]) #ps.originalColor
       print(f"found printing color toolchange to {int(toolchangeMatch.groups()[0])}")
 
 def substituteNewColor(cl, newColorIndex: int):
@@ -676,6 +693,8 @@ def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
 
           foundNewLayer = findChangeLayer(f,lastPrintState=currentPrint, gf=configuration[CONFIG_GCODE_FLAVOR], pcs=configuration[CONFIG_PERIODIC_COLORS], rcs=configuration[CONFIG_REPLACEMENT_COLORS], le=configuration[CONFIG_LINE_ENDING])
           if foundNewLayer:
+            if foundNewLayer.height == 0.4:
+              0==0
             currentPrint = foundNewLayer
 
             if statusQueue:
