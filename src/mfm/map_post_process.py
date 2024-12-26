@@ -269,7 +269,7 @@ def findLayerFeatures(f: typing.TextIO, gf: str, printState: PrintState, pcs: li
 
 def reorderFeatures(ps: PrintState):
   #Debug breakpoint before layer feature cataloging
-  if ps.height == 2.2:
+  if ps.height == 4.6:
     0==0
 
   #rearrange features
@@ -331,10 +331,10 @@ def reorderFeatures(ps: PrintState):
       print(f"wipeEnd.start: {feat.wipeEnd.start}")
   
   #Debug breakpoint after layer feature cataloging
-  if ps.height == 2.2:
+  if ps.height == 9.6:
     0==0
 
-def checkAndInsertToolchange(ps: PrintState, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor]) -> ToolchangeType:
+def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor]) -> ToolchangeType:
   # Check if we are at toolchange insertion point. This point could be active when no more features are remaining and before any features are found (TC can be inserted after change_layer found)
   insertedToolchangeTypeAtCurrentPosition = ToolchangeType.NONE
   if f.tell() == ps.toolchangeInsertionPoint:
@@ -343,7 +343,7 @@ def checkAndInsertToolchange(ps: PrintState, f: typing.TextIO, out: typing.TextI
     #skipWrite = True
 
     # find the correct color for the toolchange
-    nextFeatureColor, _ = determineNextFeaturePrintingColor(ps.features, -1, -1, False)
+    nextFeatureColor, _ = determineNextFeaturePrintingColor(features=ps.features, curFeatureIdx=-1, lastPrintingColor=(cf.printingColor if cf.isPeriodicColor else cf.originalColor), passedNonTCPrimeTowers=False)
     printingToolchangeNewColorIndex = currentPrintingColorIndexForColorIndex(nextFeatureColor, loadedColors)
 
     # Check if full toolchange is available
@@ -420,7 +420,7 @@ def determineNextFeaturePrintingColor(features: list[Feature], curFeatureIdx: in
     nextFeature = features[curFeatureIdx+1]
     if nextFeature.featureType == PRIME_TOWER: # If next feature is non-toolchange prime tower, keep looking
       return determineNextFeaturePrintingColor(features, curFeatureIdx+1, lastPrintingColor, passedNonTCPrimeTowers)
-    else:
+    elif lastPrintingColor == -1:
       lastPrintingColor = nextFeature.originalColor
       if nextFeature.printingColor > -1: # Check next feature target printing color (only set if periodic feature)
         lastPrintingColor = nextFeature.printingColor
@@ -435,7 +435,7 @@ def determineIfNextFeatureNeedsToolchange(ps: PrintState, cfi: int) -> tuple[boo
   printingToolchangeNewColorIndex = currentPrintingColorIndexForColorIndex(nextFeaturePrintingColor, loadedColors)
 
   #debug breakpoints
-  if ps.height == 0.6:
+  if ps.height == 4.6:
     0==0
 
   return beforeNextFeaturePrintingColor != printingToolchangeNewColorIndex, printingToolchangeNewColorIndex, passedNonTCPrimeTowers
@@ -529,7 +529,7 @@ def startNewFeature(gf: str, ps: PrintState, f: typing.TextIO, out: typing.TextI
   #print(f"End previous feature skip at feature {f.tell()}")
   ps.skipWrite = False
 
-  insertedToolchangeTypeAtCurrentPosition = checkAndInsertToolchange(ps=ps, f=f, out=out, cl=cl, toolchangeBareFile=toolchangeBareFile, pcs=pcs)
+  insertedToolchangeTypeAtCurrentPosition = checkAndInsertToolchange(ps=ps, cf=curFeature, f=f, out=out, cl=cl, toolchangeBareFile=toolchangeBareFile, pcs=pcs)
   if insertedToolchangeTypeAtCurrentPosition == ToolchangeType.NONE and not prevFeatureSkip:
     writeWithFilters(out, cl, loadedColors) # write current line read in (before seek to new feature location) before we restore position
   ps.skipWriteForCurrentLine = True
@@ -694,7 +694,7 @@ def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
 
           foundNewLayer = findChangeLayer(f,lastPrintState=currentPrint, gf=configuration[CONFIG_GCODE_FLAVOR], pcs=configuration[CONFIG_PERIODIC_COLORS], rcs=configuration[CONFIG_REPLACEMENT_COLORS], le=configuration[CONFIG_LINE_ENDING])
           if foundNewLayer:
-            if foundNewLayer.height == 0.4:
+            if foundNewLayer.height == 4.6:
               0==0
             currentPrint = foundNewLayer
 

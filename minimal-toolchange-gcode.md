@@ -14,8 +14,7 @@ Current premade printer toolchanges:
 
 - Generic (firmware managed tool change with `T`)
 - Generic Manual (manual filament swap, requires `M600` filament change support in firmware)
-- Bambu X1 series
-- Bambu P1 series
+- Bambu X1/P1 series
 - Bambu A1
 - Bambu A1 mini
 - Prusa XL
@@ -26,9 +25,13 @@ Every 3D printer is different and you should manually verify that the provided G
 
 1. The location for next extruder index (the tool/filament/color being switched to) **must** be replaced with `XX` in this text file. MFM will replace all instances of `XX` with the next extruder index. *E.g. When switching to extruder 1, `TXX` will become `T1`*
 
-2. It is recommended to convert moves that change depending on the current print progress from absolute to relative.
+2. It is recommended to convert movement coordinates that change depending on the current print progress from absolute to relative.
 
 3. All movements that are specific to a specific model must be removed or generalized to not interfere with printed models possibly being located anywhere in the print volume.
+
+4. If possible, it is recommended to restore the printing state's original Z coordinate at the end of the minimal toolchange. MFM will add G-code to restore the original X/Y/Z position and acceleration values after the toolchange.
+
+> **TODO:** Fan speed is currently hardcoded to 78% at the end of the X1/P1 minimal toolchange. I may track fan speed to be restored in the future.
 
 ## Toolchange Movements in Firmware or Slicer?
 

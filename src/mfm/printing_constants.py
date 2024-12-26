@@ -57,7 +57,7 @@ TOOLCHANGE_START = '^; CP TOOLCHANGE START'
 
 # Toolchange
 M620 = '^M620 S(\d*)A'
-TOOLCHANGE_T = '^\s*T(?!255$|1000|1100$)(\d*)' # Do not match T255,T1000,T1100 which are nonstandard by Bambu
+TOOLCHANGE_T = '^\s*T(?!255$|1000|1100$)(\d+)' # Do not match T255,T1000,T1100 which are nonstandard by Bambu
 M621 = '^M621 S(\d*)A'
 
 # Feature Wipe sections
