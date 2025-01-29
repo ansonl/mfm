@@ -48,7 +48,8 @@ This may happen when the tool indexes are not populated with colors in the slice
     "realWorldElevationReplacementColorStart": 2000,
     "realWorldElevationReplacementColorEnd": 30000,
     "replacementColorIndex": 3,
-    "replacementOriginalColorIndex": 0
+    "replacementOriginalColorIndex": 0,
+    "extraPurgePreviousColors": []
 }
 ```
 
@@ -72,6 +73,12 @@ This may happen when the tool indexes are not populated with colors in the slice
 | `modelIsolineHeight` | `float` | 1 | Isoline display height in model units. |
 | `isolineColorIndex` | `integer` | 1 | Isoline filament/color loaded position. Recommended index is 2 (third slot). |
 | `isolineColorFeatureTypes` | `[string]` | ≥0 | List of printing object feature/line types (extrusion roles) to recolor at isoline elevations. Empty array will recolor all feature types. Feature types are case sensitive. |
+
+### Purge/Flush Options
+
+| Key | Value | Cardinality | Description |
+| -------- | ------- | ------- | ------- |
+| `extraPurgePreviousColors` | `[int]` | ≥0 | Tool indices to add extra purging to when that tool is the previous tool in a toolchange. |
 
 #### Feature Types (Extrusion Roles)
 

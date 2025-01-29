@@ -20,13 +20,17 @@ Save the printer profile with a new name and select the new printer profile for 
 
 2. Add `; MFM LAYER CHANGE END` on a new line at the end of **After layer change G-code / Layer change G-code**.
 
-3. Add `; MFM TOOLCHANGE START`  on a new line at the beginning of **Tool change G-code / Change filament G-code**.
+3. Add `; MFM TOOLCHANGE START` on a new line at the beginning of **Tool change G-code / Change filament G-code**.
 
-4. Add `; MFM TOOLCHANGE END`  on a new line at the end of **Tool change G-code / Change filament G-code**.
+4. Add `; MFM TOOLCHANGE END` on a new line at the end of **Tool change G-code / Change filament G-code**.
 
-5. The resulting settings text fields should have an order like below
+5. If you do not have the Bambu specific **Long retraction when cut** `long_retractions_when_cut` option enabled for any of the used filament profiles, skip to last step.
 
-#### After layer change G-code
+6. **Long retraction only:** Add `; EXTRA_PURGE_INSERTION` on a new line after the last `{if flush_length_4 > 1}...{endif}` block. The added new line must be before the last occurance of `; FLUSH_START`.
+
+7. The resulting settings text fields should have an order like below
+
+#### [After] Layer change G-code
 
 ```gcode
 ; Existing layer change G-code stays HERE
@@ -34,7 +38,7 @@ Save the printer profile with a new name and select the new printer profile for 
 ; MFM LAYER CHANGE END
 ```
 
-#### Tool change G-code
+#### Tool change G-code / Change filament G-code
 
 ```gcode
 ; MFM TOOLCHANGE START
@@ -42,6 +46,26 @@ Save the printer profile with a new name and select the new printer profile for 
 ; Existing toolchange G-code stays HERE
 
 ; MFM TOOLCHANGE END
+```
+
+#### Tool change G-code / Change filament G-code - Long retraction version
+
+```gcode
+; MFM TOOLCHANGE START ; <-- Add this line
+
+; Existing toolchange G-code stays HERE
+{if flush_length_4 > 1} ; <-- This should be the last high extruding flush
+... <-- Last extruding flush G-code
+{endif}
+
+; EXTRA_PURGE_INSERTION ; <-- Add this line
+
+; FLUSH_START <-- This is a short flush that does not extrude much
+M400
+...
+; Existing toolchange G-code stays HERE
+
+; MFM TOOLCHANGE END ; <-- Add this line
 ```
 
 ## Set Filament Settings
