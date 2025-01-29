@@ -5,6 +5,7 @@ from .printing_constants import *
 from .printing_classes import *
 from .line_ending import *
 from .configuration import *
+from .extra_purge import EXTRA_PURGE_GCODE
 
 def shouldLayerBePeriodicLine(printState: PrintState, periodicLine: PeriodicColor):
   if printState.height >= periodicLine.startHeight and printState.height <= periodicLine.endHeight:
@@ -351,7 +352,7 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
       insertedToolchangeTypeAtCurrentPosition = ToolchangeType.FULL
       
       #insert toolchange full
-      out.write(f"; MFM Prime Tower and Toolchange (full) inserted to {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}\n")
+      out.write(f"; MFM Prime Tower and Toolchange (full) inserted from {ps.printingColor} to {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}\n")
 
       # Skip write for toolchange
       skipWriteToolchange = False
@@ -365,9 +366,6 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
       while f.tell() != nextAvailablePrimeTowerFeature.end:
         cl = f.readline()
 
-        if f.tell() == 155194:
-          0==0
-
         # Skip WIPE_END of the nserted prime tower
         if nextAvailablePrimeTowerFeature.wipeEnd and f.tell() == nextAvailablePrimeTowerFeature.wipeEnd.start:
           writeWithFilters(out, cl, loadedColors)
@@ -379,20 +377,32 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
         if skipWriteToolchange == False:
           cl = substituteNewColor(cl, nextFeatureColor)
           writeWithFilters(out, cl, loadedColors)
+         
+        # Write Extra Purge Gcode if previous color needs it
+        if loadedColors[ps.printingColor].extraPurgeIfPrevious:
+            extraPurgeInsertionMatch = re.match(EXTRA_PURGE_INSERTION_RE, cl)
+            if extraPurgeInsertionMatch:
+                out.write(EXTRA_PURGE_GCODE)
+        
       f.seek(cp, os.SEEK_SET)
 
-      print(f"added full toolchange {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}")
+      print(f"added full toolchange {ps.printingColor}>{nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}")
     
     else:
       insertedToolchangeTypeAtCurrentPosition = ToolchangeType.MINIMAL
       #add minimal toolchange
-      out.write(f"; MFM Toolchange (minimal) inserted to {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}\n")
+      out.write(f"; MFM Toolchange (minimal) inserted from {ps.printingColor} to {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}\n")
       # normally we would replace the color with replacement color in writeWithColorFilter() but we are replacing multiple lines so this will write directly
       with open(toolchangeBareFile, mode='r') as tc_bare:
-        tc_bare_code = tc_bare.read().replace('XX', str(printingToolchangeNewColorIndex))
+        tc_bare_code = tc_bare.read().replace('XX', str(printingToolchangeNewColorIndex)).replace('YY', str(ps.printingColor))
+        
+        # Add the extra purge if needed
+        if loadedColors[ps.printingColor].extraPurgeIfPrevious:
+            tc_bare_code = tc_bare_code.replace(EXTRA_PURGE_INSERTION, EXTRA_PURGE_INSERTION + '\n' + EXTRA_PURGE_GCODE)
+        
         out.write(tc_bare_code)
 
-      print(f"added minimal toolchange {nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}")
+      print(f"added minimal toolchange {ps.printingColor}>{nextFeatureColor} --replacement--> {printingToolchangeNewColorIndex}")
       
     ps.printingColor = printingToolchangeNewColorIndex
     ps.printingPeriodicColor = ps.printingColor == pcs[0].colorIndex if len(pcs) > 0 else False
@@ -518,6 +528,7 @@ def substituteNewColor(cl, newColorIndex: int):
   cl = re.sub(M621, f"M621 S{newColorIndex}A", cl)
   return cl
 
+# Write out a new feature
 def startNewFeature(gf: str, ps: PrintState, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor], curFeature: Feature, curFeatureIdx: int):
   # remember if last line from last feature was supposed to be skipped
   prevFeatureSkip = False
@@ -647,6 +658,15 @@ def writeWithFilters(out: typing.TextIO, cl: str, lc: list[PrintColor]):
 
 def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
   startTime = time.monotonic()
+  
+  # Mark if loaded color should be purged extra when it is the previous color
+  if configuration[CONFIG_EXTRA_PURGE_COLORS] and type(configuration[CONFIG_EXTRA_PURGE_COLORS]) is list:
+    for c in configuration[CONFIG_EXTRA_PURGE_COLORS]:
+        if c < len(loadedColors):
+            loadedColors[c].extraPurgeIfPrevious = True
+        else:
+            print(f"extra purge color index {c} is out of bounds of defined loaded colors")
+  
   try:
     with open(configuration[CONFIG_INPUT_FILE], mode='r') as f, open(configuration[CONFIG_OUTPUT_FILE], mode='w') as out:
       # Persistent variables for the read loop

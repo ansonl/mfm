@@ -11,5 +11,6 @@
   "realWorldElevationReplacementColorStart": 2300,
   "realWorldElevationReplacementColorEnd": 30000,
   "replacementColorIndex": 3,
-  "replacementOriginalColorIndex": 0
+  "replacementOriginalColorIndex": 0,
+  "extraPurgePreviousColors": []
 }

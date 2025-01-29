@@ -23,6 +23,8 @@ REAL_WORLD_ELEVATION_REPLACEMENT_COLOR_END = 'realWorldElevationReplacementColor
 REPLACEMENT_COLOR_INDEX = 'replacementColorIndex'
 REPLACEMENT_ORIGINAL_COLOR_INDEX = 'replacementOriginalColorIndex'
 
+EXTRA_PURGE_PREV_COLORS = 'extraPurgePreviousColors'
+
 periodicColorRequiredOptions = [
   MODEL_TO_REAL_WORLD_DEFAULT_UNITS,
   MODEL_ONE_TO_N_VERTICAL_SCALE,
@@ -52,6 +54,7 @@ class MFMConfiguration(typing.TypedDict):
   CONFIG_TOOLCHANGE_MINIMAL_FILE: str
   CONFIG_PERIODIC_COLORS: list[PeriodicColor]
   CONFIG_REPLACEMENT_COLORS: list[ReplacementColorAtHeight]
+  CONFIG_EXTRA_PURGE_COLORS: list[int]
   CONFIG_LINE_ENDING: str
   CONFIG_APP_NAME: str
   CONFIG_APP_VERSION: str
@@ -121,4 +124,8 @@ def parseReplacementColors(userOptions: dict) -> list[ReplacementColorAtHeight]:
     print("Added replacement color based on options")
   return replacementColors
 
-
+def parseExtraPurgePrevColors(userOptions: dict) -> list[int]:
+    extraPurgePrevColors: list[int] = []
+    if EXTRA_PURGE_PREV_COLORS in userOptions and type(userOptions[EXTRA_PURGE_PREV_COLORS]) is list:
+        extraPurgePrevColors = userOptions[EXTRA_PURGE_PREV_COLORS]
+    return extraPurgePrevColors

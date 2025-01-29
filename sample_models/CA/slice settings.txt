@@ -1,0 +1,23 @@
+p1
+ironing on
+top surface pattern monotonic line
+solid infill pattern monotonic line
+prime
+
+p2
+ironing on
+top surface pattern monotonic
+solid infill pattern monotonic line
+no prime
+
+p3
+ironing on
+top surface pattern monotonic line
+solid infill pattern monotonic
+no prime
+
+p4
+ironing on
+top surface pattern monotonic line
+solid infill pattern rectilinear
+no prime

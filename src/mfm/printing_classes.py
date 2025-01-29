@@ -142,6 +142,7 @@ class PrintColor:
     self.index: int = index
     self.replacementColorIndex: int = replacementColorIndex #the current replacement color
     self.humanColor: str = humanColor
+    self.extraPurgeIfPrevious: bool = False
 
 loadedColors: list[PrintColor] = [
   PrintColor(0, -1, 'Base Color'),

@@ -8,7 +8,7 @@ The options file is formatted as a JSON dictionary with the following keys.
 
 Options values are provided for each [3D printable map model](https://ansonliu.com/maps/) on the [specifications page](https://ansonliu.com/maps/specifications/).
 
-You can test configurations with the sample dual color dice G-code files in the `sample_models` folder. 
+You can test configurations with the sample dual color dice G-code files in the `sample_models` folder.
 
 Filament/color positions are 0-based. The first position is represented by `0`. The recommended filament order is:
 
@@ -16,6 +16,16 @@ Filament/color positions are 0-based. The first position is represented by `0`. 
 | -------- | ------- | ------- | ------- | ------ |
 | 0-based tool index in software | `0` | `1` | `2` | `3` |
 | **Purpose** | Primary (base) | Secondary (hydro) | *Isoline (contour line)* | *Elevation Color Change* |
+
+### Filament Color data in G-code
+
+If the final post processed G-code preview does not seem to show the right colors, you can set the filament color data in the `;CONFIG_BLOCK_START` of the G-code.
+
+```gcode
+; filament_colour = #00FF80;#0080FF;#FFFF00;#FF0000
+```
+
+This may happen when the tool indexes are not populated with colors in the slicer prior to exporting the G-code.
 
 ### Example Options file with Isoline and Elevation Change features
 

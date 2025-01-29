@@ -292,6 +292,7 @@ class App(tk.Tk):
 
         periodicColors = parsePeriodicColors(userOptions=userOptions)
         replacementColors = parseReplacementColors(userOptions=userOptions)
+        extraPurgePrevColors = parseExtraPurgePrevColors(userOptions=userOptions)
 
         lineEndingFlavor = userOptions[LINE_ENDING_FLAVOR] if userOptions[LINE_ENDING_FLAVOR] else LineEnding.AUTODETECT
         print(f"Selected {repr(lineEndingFlavor)} line ending.")
@@ -309,6 +310,7 @@ class App(tk.Tk):
         mfmConfig[CONFIG_TOOLCHANGE_MINIMAL_FILE] = userOptions[CONFIG_TOOLCHANGE_MINIMAL_FILE]
         mfmConfig[CONFIG_PERIODIC_COLORS] = periodicColors
         mfmConfig[CONFIG_REPLACEMENT_COLORS] = replacementColors
+        mfmConfig[CONFIG_EXTRA_PURGE_COLORS] = extraPurgePrevColors
         mfmConfig[CONFIG_LINE_ENDING] = lineEndingFlavor.value
         mfmConfig[CONFIG_APP_NAME] = APP_NAME
         mfmConfig[CONFIG_APP_VERSION] = APP_VERSION

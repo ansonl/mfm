@@ -110,7 +110,8 @@ def runScript():
     # Parse colors
     periodicColors = parsePeriodicColors(userOptions=userOptions)
     replacementColors = parseReplacementColors(userOptions=userOptions)
-
+    extraPurgePrevColors = parseExtraPurgePrevColors(userOptions=userOptions)
+    
     # Determine line ending
     if lineEndingFlavor == LineEndingCommandLineParameter.AUTODETECT: 
         lineEndingFlavor = LineEnding.AUTODETECT
@@ -146,6 +147,7 @@ def runScript():
     mfmConfig[CONFIG_TOOLCHANGE_MINIMAL_FILE] = toolchangeFile
     mfmConfig[CONFIG_PERIODIC_COLORS] = periodicColors
     mfmConfig[CONFIG_REPLACEMENT_COLORS] = replacementColors
+    mfmConfig[CONFIG_EXTRA_PURGE_COLORS] = extraPurgePrevColors
     mfmConfig[CONFIG_LINE_ENDING] = lineEndingFlavor.value
     mfmConfig[CONFIG_APP_NAME] = APP_NAME
     mfmConfig[CONFIG_APP_VERSION] = APP_VERSION
