@@ -6,9 +6,10 @@ Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/
 
 Use the latest version of MFM in 1 of 3 ways → [Getting Started](#getting-started)
 
-- [Integrated Post Processing Script in PrusaSlicer/Bambu Studio/Orca Slicer](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code. Runs automatically after slicing.
-- [Python script](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Preferred for latest functionality and code.
-- [GUI](https://github.com/ansonl/mfm/releases) - Portable graphical interface.
+- [MFM App](https://github.com/ansonl/mfm/releases) - Easiest to use and get started with a graphical user interface. Precompiled for Windows/Linux/Mac
+- [Integrated Post Processing Script in PrusaSlicer/Bambu Studio/Orca Slicer](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Runs automatically after slicing.
+- [Python Script](https://github.com/ansonl/mfm/archive/refs/heads/master.zip) - Runnable from command line.
+
 
 **MFM adds additional features to the model by post processing sliced [3D printer G-code](https://marlinfw.org/meta/gcode/). 3D models and printing g-code can be recolored at either layer or individual feature/line level granularity.**
 

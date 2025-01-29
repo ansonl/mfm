@@ -70,45 +70,21 @@ M400
 
 ## Set Filament Settings
 
-### Disable `Long retraction when cut` (Bambu Studio/Orca Slicer)
+### `Long retraction when cut` (Bambu Studio/Orca Slicer)
 
-Bambu Slicer and Orca Slicer have a conditional section in the toolchange that uses a proprietary G-code `M620.11` to perform a longer retraction before cutting filament. This command requires the previous extruder index for an unknown purpose. 
-
-I assume that this previous extruder index is used to simultaneously retract the previous extruder index filament feeder inside the AMS and the printhead extruder. This may be for reliability if the new longer retraction distance being greater than what the filament buffer was initially designed to buffer. 
-
-Before the toolchange
-
-```gcode
-{if long_retractions_when_cut[previous_extruder]}
-M620.11 S1 I[previous_extruder] E-{retraction_distances_when_cut[previous_extruder]} F{old_filament_e_feedrate}
-{else}
-M620.11 S0
-{endif}
-```
-
-After the toolchange, before flushing
-
-```gcode
-{if long_retractions_when_cut[previous_extruder]}
-M620.11 S1 I[previous_extruder] E{retraction_distances_when_cut[previous_extruder]} F{old_filament_e_feedrate}
-M628 S1
-G92 E0
-G1 E{retraction_distances_when_cut[previous_extruder]} F[old_filament_e_feedrate]
-M400
-M629 S1
-{else}
-M620.11 S0
-{endif}
-```
+Bambu Slicer and Orca Slicer have a conditional section in the toolchange that uses a proprietary G-code `M620.11` to perform a longer retraction before cutting filament. This can reduce purged filament by 20-30% on average.
 
 For every filament used:
 
 1. Filament > **Setting Overrides**
-2. Uncheck `Long retraction when cut`
+
+2. Check or Uncheck `Long retraction when cut` respectively if you want **Long retraction when cut** enabled or disabled.
+
+> `M620.11` command parameter asks for the previous extruder index for some movements that strictly speaking, should not need it. MFM is compatible with `M620.11` and can do long retractions by tracking the previous tool.
 
 ## Set Post-processing Scripts *(optional)*
 
-Add MFM as a post-processing script if you want to automatically run MFM in your Slicer. 
+Add MFM as a post-processing script if you want to automatically run MFM in your Slicer.
 
 If you plan to do the processing through the standalone MFM GUI app, you can skip this step.
 
