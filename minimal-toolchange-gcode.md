@@ -14,7 +14,7 @@ Current premade printer toolchanges:
 
 - Generic (firmware managed tool change with `T`)
 - Generic Manual (manual filament swap, requires `M600` filament change support in firmware)
-- Bambu X1/P1 series
+- Bambu X1/P1 series *(Recommended: `bambu-x1-p1-series-long-retraction-107mm3-flush.gcode`)*
 - Bambu A1
 - Bambu A1 mini
 - Prusa XL
@@ -23,13 +23,17 @@ Every 3D printer is different and you should manually verify that the provided G
 
 ## Requirements to Create a Minimal Toolchange
 
-1. The location for next extruder index (the tool/filament/color being switched to) **must** be replaced with `XX` in this text file. MFM will replace all instances of `XX` with the next extruder index. *E.g. When switching to extruder 1, `TXX` will become `T1`*
+1. The location for next tool index (the tool/filament/color being switched to) **must** be replaced with `XX` in this text file. MFM will replace all instances of `XX` with the next tool index. *E.g. When switching to extruder 1, `TXX` will become `T1`*
 
-2. It is recommended to convert movement coordinates that change depending on the current print progress from absolute to relative.
+1. The location for the previous tool index **must** be replaced with `YY` in this text file. This is only needed for G-code that needs the previous tool index e.g. `M620.11`.
 
-3. All movements that are specific to a specific model must be removed or generalized to not interfere with printed models possibly being located anywhere in the print volume.
+1. MFM will insert extra purge G-code if needed after any occurance of `; EXTRA_PURGE_INSERTION`.
 
-4. If possible, it is recommended to restore the printing state's original Z coordinate at the end of the minimal toolchange. MFM will add G-code to restore the original X/Y/Z position and acceleration values after the toolchange.
+1. It is recommended to convert movement coordinates that change depending on the current print progress from absolute to relative.
+
+1. All movements that are specific to a specific model must be removed or generalized to not interfere with printed models possibly being located anywhere in the print volume.
+
+1. If possible, it is recommended to restore the printing state's original Z coordinate at the end of the minimal toolchange. MFM will add G-code to restore the original X/Y/Z position and acceleration values after the toolchange.
 
 > **TODO:** Fan speed is currently hardcoded to 78% at the end of the X1/P1 minimal toolchange. I may track fan speed to be restored in the future.
 
@@ -56,4 +60,4 @@ A properly set up tool change g-code in firmware example for a multi-extruder 3D
 
 ## Contributing
 
-If you would like to contribute your tested toolchange G-Code, please make a pull request on this Github repo.
+If you would like to contribute your tested toolchange G-Code or have feedback, please make an issue or pull request on this Github repo.

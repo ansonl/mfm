@@ -1,7 +1,5 @@
 # MFM Configuration
 
-## Feature Options
-
 **Use Premade Options in [premade_options](./premade_options/) for the [3D printable map models](https://ansonliu.com/maps/) collection.**
 
 The options file is formatted as a JSON dictionary with the following keys. 
@@ -10,6 +8,8 @@ Options values are provided for each [3D printable map model](https://ansonliu.c
 
 You can test configurations with the sample dual color dice G-code files in the `sample_models` folder.
 
+## Color Assignment
+
 Filament/color positions are 0-based. The first position is represented by `0`. The recommended filament order is:
 
 | Physical Position (left to right) → | 1 | 2 | 3 | 4 |
@@ -17,17 +17,7 @@ Filament/color positions are 0-based. The first position is represented by `0`. 
 | 0-based tool index in software | `0` | `1` | `2` | `3` |
 | **Purpose** | Primary (base) | Secondary (hydro) | *Isoline (contour line)* | *Elevation Color Change* |
 
-### Filament Color data in G-code
-
-If the final post processed G-code preview does not seem to show the right colors, you can set the filament color data in the `;CONFIG_BLOCK_START` of the G-code.
-
-```gcode
-; filament_colour = #00FF80;#0080FF;#FFFF00;#FF0000
-```
-
-This may happen when the tool indexes are not populated with colors in the slicer prior to exporting the G-code.
-
-### Example Options file with Isoline and Elevation Change features
+## Example Options file with Isoline and Elevation Change features
 
 ```json
 {
@@ -49,9 +39,22 @@ This may happen when the tool indexes are not populated with colors in the slice
     "realWorldElevationReplacementColorEnd": 30000,
     "replacementColorIndex": 3,
     "replacementOriginalColorIndex": 0,
-    "extraPurgePreviousColors": []
+    "extraPurgePreviousColors": [2]
 }
 ```
+
+A map processed with this set of options will have the following appearance:
+
+- Sea level start at 3.6mm in printed height.
+
+- The first isoline (contour line) will start at 500m of real world height and future isolines will appear at 500m intervals (1000, 1500, 2000, etc). The isolines will stop at 30000m which is high enough to mean that the isolines will not stop on a normal map. The isoline color will use the filament loaded at index 2.
+  - The isoline color will affect all wall/perimeter features.
+
+- High elevation (snow line) replacement color will start at 2000m and end at 30000m. All uses of the filament at index 0 will be replaced with filament at index 3 when printing in the replacement color range.
+
+- Whenever a color swap (toolchange) has the previous color of index 2, extra purging (150mm³) will be done.
+
+## All Options
 
 ### Required Options
 
@@ -74,13 +77,22 @@ This may happen when the tool indexes are not populated with colors in the slice
 | `isolineColorIndex` | `integer` | 1 | Isoline filament/color loaded position. Recommended index is 2 (third slot). |
 | `isolineColorFeatureTypes` | `[string]` | ≥0 | List of printing object feature/line types (extrusion roles) to recolor at isoline elevations. Empty array will recolor all feature types. Feature types are case sensitive. |
 
+### Elevation Change Options
+
+| Key | Value | Cardinality | Description |
+| -------- | ------- | ------- | ------- |
+| `realWorldElevationReplacementColorStart` | `float` | 1 | Elevation based replacement color start elevation in real world units. |
+| `realWorldElevationReplacementColorEnd` | `float` | 1 | Elevation based replacement color end elevation in real world units. |
+| `replacementColorIndex` | `integer` | 1 | Elevation based replacement color filament/color loaded position. Recommended index is 3 (fourth slot). |
+| `replacementOriginalColorIndex` | `integer` | 1 | Elevation based replacement color **replaced** filament/color loaded position. Recommended index is 0 (first slot). |
+
 ### Purge/Flush Options
 
 | Key | Value | Cardinality | Description |
 | -------- | ------- | ------- | ------- |
 | `extraPurgePreviousColors` | `[int]` | ≥0 | Tool indices to add extra purging to when that tool is the previous tool in a toolchange. |
 
-#### Feature Types (Extrusion Roles)
+### Feature Types (Extrusion Roles)
 
 3D printed Feature Types are different categories used to define printing order and settings of printing travel and extrusion movements.
 
@@ -98,11 +110,12 @@ Feature Types vary depending on the slicer used to generate the G-code. You can 
 
 MFM rearranges printing order of features to reduce the number of toolchanges a layer. Isoline recolored features are printed first. This may affect print quality of supported parts but you can work around that by specifying the `Support` and `Bridge` feature types for recoloring.
 
-### Elevation Change Options
+### Filament Color data in G-code (Bambu/Orca)
 
-| Key | Value | Cardinality | Description |
-| -------- | ------- | ------- | ------- |
-| `realWorldElevationReplacementColorStart` | `float` | 1 | Elevation based replacement color start elevation in real world units. |
-| `realWorldElevationReplacementColorEnd` | `float` | 1 | Elevation based replacement color end elevation in real world units. |
-| `replacementColorIndex` | `integer` | 1 | Elevation based replacement color filament/color loaded position. Recommended index is 3 (fourth slot). |
-| `replacementOriginalColorIndex` | `integer` | 1 | Elevation based replacement color **replaced** filament/color loaded position. Recommended index is 0 (first slot). |
+If the final post processed G-code preview does not seem to show the right colors, you can set the filament color data in the `;CONFIG_BLOCK_START` of the G-code.
+
+```gcode
+; filament_colour = #00FF80;#0080FF;#FFFF00;#FF0000
+```
+
+This may happen when the tool indexes are not populated with colors in the slicer prior to exporting the G-code.
