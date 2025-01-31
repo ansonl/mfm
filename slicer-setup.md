@@ -106,4 +106,12 @@ If you plan to do the processing through the standalone MFM GUI app, you can ski
 
 3. Create the MFM command text as described in [MFM Command Setup](terminal-setup.md)
 
-4. Add the final command text to **Post-processing scripts** 
+4. Add the final command text to **Post-processing scripts**
+
+## Slicer Print Settings
+
+### Ironing
+
+If you intend to add isolines and using Ironing on the top surface, the standard ironing inset will cover up the isoline color on the outer wall.
+
+Set Ironing inset to your line width (nozzle diameter) * 1.25 to not obscure the isolines.

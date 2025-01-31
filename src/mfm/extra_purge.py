@@ -1,3 +1,4 @@
+# Purge 150mm^3 of 1.75mm filament
 EXTRA_PURGE_GCODE = """
 G91
 G1 X3 F12000; move aside to extrude

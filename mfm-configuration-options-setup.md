@@ -119,3 +119,5 @@ If the final post processed G-code preview does not seem to show the right color
 ```
 
 This may happen when the tool indexes are not populated with colors in the slicer prior to exporting the G-code.
+
+Slicers may try to use the previous saved colors from your last opened project for the preview to overwrite the G-code color data. Assign the desired in a project and close then reopen and preview the G-code to see the updated colors.
