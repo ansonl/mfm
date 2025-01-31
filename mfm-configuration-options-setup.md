@@ -22,8 +22,8 @@ Filament/color positions are 0-based. The first position is represented by `0`. 
 ```json
 {
     "modelToRealWorldDefaultUnits": 1000,
-    "modelOneToNVerticalScale": 250000,
-    "modelSeaLevelBaseThickness": 3.6,
+    "modelOneToNVerticalScale": 500000,
+    "modelSeaLevelBaseThickness": 1.8,
     "realWorldIsolineElevationInterval": 500,
     "realWorldIsolineElevationStart": 500,
     "realWorldIsolineElevationEnd": 30000,
@@ -31,9 +31,7 @@ Filament/color positions are 0-based. The first position is represented by `0`. 
     "isolineColorIndex": 2,
     "isolineColorFeatureTypes": [
         "Outer wall",
-        "Inner wall",
-        "External perimeter",
-        "Perimeter"
+        "External perimeter"
     ],
     "realWorldElevationReplacementColorStart": 2000,
     "realWorldElevationReplacementColorEnd": 30000,
@@ -45,7 +43,9 @@ Filament/color positions are 0-based. The first position is represented by `0`. 
 
 A map processed with this set of options will have the following appearance:
 
-- Sea level start at 3.6mm in printed height.
+- Map elevation (Z) scale is 1:500000.
+
+- Sea level start at 1.8mm in printed height.
 
 - The first isoline (contour line) will start at 500m of real world height and future isolines will appear at 500m intervals (1000, 1500, 2000, etc). The isolines will stop at 30000m which is high enough to mean that the isolines will not stop on a normal map. The isoline color will use the filament loaded at index 2.
   - The isoline color will affect all wall/perimeter features.

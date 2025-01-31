@@ -34,6 +34,14 @@ Bambu AMS Toolchange
 | F523 | Filament extrude feedrate |
 | TXX | Extruder temperature XX |
 
+## M620.11 - AMS Do Toolchange Long Retract Version
+
+| Parameter    | Notes |
+| -------- | ------- |
+| E | Move the extruder and AMS hub motor if negative. Move only AMS hub motor if positive. |
+| F523 | Filament extrude feedrate |
+| TXX | Extruder temperature XX |
+
 ## M621 - AMS Toolchange
 
 Bambu AMS Toolchange

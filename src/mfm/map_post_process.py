@@ -380,9 +380,9 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
          
         # Write Extra Purge Gcode if previous color needs it
         if loadedColors[ps.printingColor].extraPurgeIfPrevious:
-            extraPurgeInsertionMatch = re.match(EXTRA_PURGE_INSERTION_RE, cl)
-            if extraPurgeInsertionMatch:
-                out.write(EXTRA_PURGE_GCODE)
+          extraPurgeInsertionMatch = re.match(EXTRA_PURGE_INSERTION_RE, cl)
+          if extraPurgeInsertionMatch:
+            out.write(EXTRA_PURGE_GCODE)
         
       f.seek(cp, os.SEEK_SET)
 
@@ -398,7 +398,7 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
         
         # Add the extra purge if needed
         if loadedColors[ps.printingColor].extraPurgeIfPrevious:
-            tc_bare_code = tc_bare_code.replace(EXTRA_PURGE_INSERTION, EXTRA_PURGE_INSERTION + '\n' + EXTRA_PURGE_GCODE)
+          tc_bare_code = tc_bare_code.replace(EXTRA_PURGE_INSERTION, EXTRA_PURGE_INSERTION + '\n' + EXTRA_PURGE_GCODE)
         
         out.write(tc_bare_code)
 
