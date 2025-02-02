@@ -114,4 +114,4 @@ If you plan to do the processing through the standalone MFM GUI app, you can ski
 
 If you intend to add isolines and using Ironing on the top surface, the standard ironing inset will cover up the isoline color on the outer wall.
 
-Set Ironing inset to your line width (nozzle diameter) * 1.25 to not obscure the isolines.
+Set Ironing inset to your line width (nozzle diameter) multiplied between 1 and 1.25 to not obscure the isolines.

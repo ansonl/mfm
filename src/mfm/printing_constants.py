@@ -67,6 +67,7 @@ EXTRA_PURGE_INSERTION_RE = f'^{EXTRA_PURGE_INSERTION}'
 WIPE_START = '^;\s?WIPE_START'
 WIPE_END = '^;\s?WIPE_END'
 RETAIN_WIPE_END_FEATURE_TYPES = ['Internal infill']
+RETAIN_WIPE_END_IF_FEATURE_END_NOT_WITHIN_N_LINES = 6
 
 # Start and stop individual object
 #STOP_OBJECT = '^;\s(?:stop printing object)\s?(?:, unique label|.*)\sid:?\s?(\d*)'

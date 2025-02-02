@@ -783,14 +783,25 @@ def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
             #print(f"start feature toolchange skip ")
           
           if curFeature.wipeEnd and f.tell() == curFeature.wipeEnd.start and curFeature.featureType not in RETAIN_WIPE_END_FEATURE_TYPES:
-            writeWithFilters(out, cl, loadedColors)
-            #print(f"Skipping feature WIPE_END. Start skip at {f.tell()}")
-            out.write(";WIPE_END placeholder for PrusaSlicer Gcode Viewer\n")
-            out.write("; WIPE_END placeholder for BambuStudio Gcode Preview\n")
-            out.write("; MFM Original WIPE_END skipped\n")
-            currentPrint.skipWrite = True
-            # Reference original pos as last wipe end pos for next layer
-            currentPrint.featureWipeEndPrime = currentPrint.originalPosition
+            # Keep wipe if WIPE_END is greater than N lines before feature end            
+            linesUntilFeatureEnd = 0
+            while f.tell() < curFeature.end and linesUntilFeatureEnd <= RETAIN_WIPE_END_IF_FEATURE_END_NOT_WITHIN_N_LINES:
+              _ = f.readline()
+              linesUntilFeatureEnd += 1
+              
+            # Restore file position
+            f.seek(curFeature.wipeEnd.start)
+            
+            # Skip wipe end
+            if linesUntilFeatureEnd <= RETAIN_WIPE_END_IF_FEATURE_END_NOT_WITHIN_N_LINES:
+              writeWithFilters(out, cl, loadedColors)
+              #print(f"Skipping feature WIPE_END. Start skip at {f.tell()}")
+              out.write(";WIPE_END placeholder for PrusaSlicer Gcode Viewer\n")
+              out.write("; WIPE_END placeholder for BambuStudio Gcode Preview\n")
+              out.write("; MFM Original WIPE_END skipped\n")
+              currentPrint.skipWrite = True
+              # Reference original pos as last wipe end pos for next layer
+              currentPrint.featureWipeEndPrime = currentPrint.originalPosition
             
 
         # Write current line
