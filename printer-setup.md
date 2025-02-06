@@ -12,7 +12,9 @@ You can also copy G-code to an SD card that you put into the printer.
 
 ### Bambu Lab Printers
 
-Bambu Studio allows you to **Send** previewed G-code to Bambu Lab printers over a network connection. It will not allow you to directly use the **Print** action to run a G-code file.
+Bambu Studio allows you to **Send** previewed G-code to Bambu Lab printers over a network connection. You can print the sent G-code on the Bambu printer screen itself after ensuring the colors are physically located in the correct AMS slots.
+
+Bambu will not allow you to directly use the Bambu Studio **Print** action to run a G-code file.
 
 Bambu Lab has unreasonably required a printer have LAN Mode turned off to use SD storage features in Bambu Studio.
 
