@@ -14,12 +14,15 @@ Current premade printer toolchanges:
 
 - Generic (firmware managed tool change with `T`)
 - Generic Manual (manual filament swap, requires `M600` filament change support in firmware)
-- Bambu X1/P1 series *(Recommended: `bambu-x1-p1-series-long-retraction-107mm3-flush.gcode`)*
+- Bambu X1/P1 series
+  - ***Latest Recommended:***
+    - **Long retract on cut** enabled - `bambu-x1-p1-series-long-retraction-107mm3-flush.gcode`
+    - No long retract - `bambu-x1-p1-series-107mm3-flush.gcode`
 - Bambu A1
 - Bambu A1 mini
 - Prusa XL
 
-Every 3D printer is different and you should manually verify that the provided G-code is compatible with your printer.
+Every 3D printer is different and you should manually verify that the provided G-code is compatible with your printer. I recommend you create your own minimal toolchange G-code using the information in the below section and the premade G-code as a reference.
 
 ## Requirements to Create a Minimal Toolchange
 

@@ -51,9 +51,9 @@ Set up your slicer and printer for MFM by following the steps on each page below
 
 1. [Slicer Setup](slicer-setup.md)
 
-2. [MFM Command Setup](terminal-setup.md) (not needed for GUI)
+2. [MFM Command Setup](terminal-setup.md) ***(Post Processing and Command Line only)***
 
-3. [Options](mfm-configuration-options-setup.md)
+3. [MFM Config Options](mfm-configuration-options-setup.md)
 
 4. [Minimal Toolchange G-code](minimal-toolchange-gcode.md)
 
@@ -88,6 +88,8 @@ Download the [latest GUI release of MFM](https://github.com/ansonl/mfm/releases)
 5. Press **Post Process**
 
 > If a release of MFM has not been built for your OS, you can launch the GUI by [downloading the code](https://github.com/ansonl/mfm/archive/refs/heads/master.zip), navigate to the code folder in the command line and run `python src/gui.py`.
+
+> ⚠️ **The first color change may be set to the wrong color.** If the first color change is incorrect, open the G-code in a text editor and search for `TX` (e.g. `T3`) where `X` is the wrong color index and **replace the first match of `T3` with `T0`** or desired base starting color index. This issue occurs about 50% of the time due to a known 10+ year old Windows Python [bug](https://stackoverflow.com/questions/15934950/python-file-tell-giving-strange-numbers).
 
 ### Printing the G-code file
 

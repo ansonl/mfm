@@ -115,3 +115,13 @@ If you plan to do the processing through the standalone MFM GUI app, you can ski
 If you intend to add isolines and using Ironing on the top surface, the standard ironing inset will cover up the isoline color on the outer wall.
 
 Set Ironing inset to your line width (nozzle diameter) multiplied between 1 and 1.25 to not obscure the isolines.
+
+### Flushing Volumes
+
+Slicer generated toolchange flushing volumes are readily mixed between all tools when processed with MFM so it is recommended to **set all flushing volumes to the minimum amount** needed between all colors (e.g. 107mm³) for consistency.
+
+1. Determine the flushing volume between your 4 colors by running this [calibration](https://makerworld.com/en/models/69131).
+
+2. Find the minimum flushing volume needed for any color change. This should be ~107mm³.
+
+3. If any color requires extra flushing volume beyond the minimum flushing volume, add that color index to the comma separated array for the key `extraPurgePreviousColors` the [MFM Config Option JSON file](mfm-configuration-options-setup.md). This will add an additional 150mm³ of flushing volume which can be increased by modifying the hard-coded flushing G-code in `mfm/extra_purge.py`.
