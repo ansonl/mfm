@@ -9,10 +9,12 @@ import threading
 from mfm.line_ending import *
 from mfm.map_post_process import *
 
+
 class LineEndingCommandLineParameter(enum.Enum):
     AUTODETECT = "AUTO"
     WINDOWS = "WINDOWS"
     UNIX = "UNIX"
+
 
 TEMP_OUTPUT_GCODE_FILE = 'mfm-output.gcode'
 
@@ -32,20 +34,23 @@ TEMP_OUTPUT_GCODE_FILE = 'mfm-output.gcode'
 # Slicer Post-processing Scripts (windows) (put project folder in user home folder)
 # "C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\python3.11.exe" "C:\Users\USERNAME\topo-map-post-processing\src\mfm_cmd.py" -c "C:\Users\USERNAME\topo-map-post-processing\sample_models\dual_color_dice\config-dice-test.json" -t "C:\Users\USERNAME\topo-map-post-processing\minimal_toolchanges\bambu-p1-series.gcode";
 
+
 def setupLogging():
     redirectSTDERR = open(os.path.join(
         os.path.expanduser('~'), 'mfm-script-stderr.log'), "w")
     sys.stderr.write = redirectSTDERR.write
 
     '''
-    redirectSTDOUT = open(os.path.join(os.path.expanduser('~'), 'mfm-script-stdout.log'), "w")
-    sys.stdout.write = redirectSTDOUT.write
-    '''
+  redirectSTDOUT = open(os.path.join(os.path.expanduser('~'), 'mfm-script-stdout.log'), "w")
+  sys.stdout.write = redirectSTDOUT.write
+  '''
 
     log_file_path = os.path.join(os.path.expanduser('~'), 'mfm-script.log')
     try:
         logging.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s', filename=log_file_path, filemode='w')
+                            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                            filename=log_file_path,
+                            filemode='w')
         console = logging.StreamHandler(stream=sys.stdout)
         console.setLevel(logging.DEBUG)
         formatter = logging.Formatter(
@@ -91,7 +96,7 @@ def runScript():
     parser.add_argument('-t', '--toolchange', required=True,
                         help='Toolchange G-code file')
     parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT.value, LineEndingCommandLineParameter.WINDOWS.value,
-                        LineEndingCommandLineParameter.UNIX.value], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
+                                        LineEndingCommandLineParameter.UNIX.value], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
     parser.add_argument('--disable', type=int,
                         choices=[0, 1], default=0, help='Disable post processing')
 
