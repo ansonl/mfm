@@ -656,7 +656,18 @@ def writeWithFilters(out: typing.TextIO, cl: str, lc: list[PrintColor]):
   
   out.write(cl)
 
-def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
+def process(configuration: MFMConfiguration, inputFP: typing.TextIO, outputFP: typing.TextIO, statusQueue: queue.Queue):
+  """Process the Gcode in the input file pointer and write to the output file pointer. This function will close both input and output file pointers at the end.
+
+  :param configuration: Configuration parameters
+  :type configuration: MFMConfiguration
+  :param inputFP: Input file pointer
+  :type inputFP: typing.TextIO
+  :param outputFP: Output file pointer
+  :type outputFP: typing.TextIO
+  :param statusQueue: Queue to send status updates to.
+  :type statusQueue: queue.Queue
+  """
   startTime = time.monotonic()
   
   # Mark if loaded color should be purged extra when it is the previous color
@@ -668,7 +679,7 @@ def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
             print(f"extra purge color index {c} is out of bounds of defined loaded colors")
   
   try:
-    with open(configuration[CONFIG_INPUT_FILE], mode='r') as f, open(configuration[CONFIG_OUTPUT_FILE], mode='w') as out:
+    with inputFP as f, outputFP as out:    
       # Persistent variables for the read loop
       
       # The current print state
@@ -690,9 +701,6 @@ def process(configuration: MFMConfiguration, statusQueue: queue.Queue):
         cp = f.tell() # position is start of next line after read line. We define in lower scope function as needed for retention.
 
         currentPrint.skipWriteForCurrentLine = False
-
-        if f.tell() == 30440:
-          0==0
 
         # Update current print state variables
         updatePrintState(ps=currentPrint, cl=cl, sw=currentPrint.skipWrite, cp=cp)

@@ -15,6 +15,7 @@ import webbrowser
 
 from mfm.configuration import *
 from mfm.map_post_process import *
+from mfm.plate_sliced import *
 
 # RUNTIME Flag
 TEST_MODE = False
@@ -61,10 +62,17 @@ def truncateMiddleLength(s, length):
   return s
 
 def addExportToFilename(fn):
-  fnSplit = os.path.splitext(fn)
-  exportFn = f"{fnSplit[0]}-MFM-export"
-  if len(fnSplit) > 1:
-    exportFn += fnSplit[1]
+  fnSplit = fn.rsplit('.', 2)
+  exportFn = f"{fnSplit[0]}"
+  if len(fnSplit) == 3:
+    if fnSplit[1].lower() == 'gcode' and fnSplit[2].lower() == '3mf':
+      exportFn += f"-{MFM_EXPORT_FILE_SUFFIX}.{fnSplit[1]}.{fnSplit[2]}"
+    else:
+      exportFn += f"{fnSplit[1]}-{MFM_EXPORT_FILE_SUFFIX}.{fnSplit[2]}"
+  elif len(fnSplit) == 2:
+    exportFn += f"-{MFM_EXPORT_FILE_SUFFIX}.{fnSplit[1]}"
+  elif len(fnSplit) == 1:
+    exportFn += f"-{MFM_EXPORT_FILE_SUFFIX}"
   return exportFn
 
 class App(tk.Tk):
@@ -105,7 +113,7 @@ class App(tk.Tk):
     gcodeFlavorComboBox.grid(row=0, column=1, sticky=tk.EW, padx=10, pady=10)
 
     def selectImportGcodeFile():
-      fn = select_open_file([('G-code file', '*.gcode')])
+      fn = select_open_file([('G-code file', '*.gcode'), ('G-code embedded 3MF file', '*.gcode.3mf')])
       if fn:
         importGcodeButton.config(text=truncateMiddleLength(fn, 50))
         exportFn = addExportToFilename(fn)
@@ -151,24 +159,24 @@ class App(tk.Tk):
 
     importLabel = tk.Label(
       master=self,
-      text='Print G-code '
+      text='Input Print G-code'
     )
     importLabel.grid(row=1, column=0, sticky=tk.W, padx=10)
     importGcodeButton = tk.Button(
       master=self,
-      text='Select file',
+      text='Select G-code / G-code embedded 3MF',
       command=selectImportGcodeFile
     )
     importGcodeButton.grid(row=1, column=1, sticky=tk.EW, padx=10, pady=5)
 
     optionsLabel = tk.Label(
       master=self,
-      text='Options'
+      text='MFM Config Options'
     )
     optionsLabel.grid(row=2, column=0, sticky=tk.W, padx=10)
     importOptionsButton = tk.Button(
       master=self,
-      text='Select file',
+      text='Select JSON',
       command=selectOptionsFile
     )
     importOptionsButton.grid(row=2, column=1, sticky=tk.EW, padx=10, pady=5)
@@ -180,19 +188,19 @@ class App(tk.Tk):
     toolchangeBareLabel.grid(row=3, column=0, sticky=tk.W, padx=10)
     importToolchangeBareButton = tk.Button(
       master=self,
-      text='Select file',
+      text='Select G-code',
       command=selectToolchangeBareFile
     )
     importToolchangeBareButton.grid(row=3, column=1, sticky=tk.EW, padx=10, pady=5)
 
     exportLabel = tk.Label(
       master=self,
-      text='Export G-code'
+      text='Output G-code'
     )
     exportLabel.grid(row=4, column=0, sticky=tk.W, padx=10)
     exportGcodeButton = tk.Button(
       master=self,
-      text='Select file',
+      text='Select output G-code location',
       command=selectExportGcodeFile
     )
     exportGcodeButton.grid(row=4, column=1, sticky=tk.EW, padx=10, pady=5)
@@ -293,15 +301,9 @@ class App(tk.Tk):
         periodicColors = parsePeriodicColors(userOptions=userOptions)
         replacementColors = parseReplacementColors(userOptions=userOptions)
         extraPurgePrevColors = parseExtraPurgePrevColors(userOptions=userOptions)
-
+        
         lineEndingFlavor = userOptions[LINE_ENDING_FLAVOR] if userOptions[LINE_ENDING_FLAVOR] else LineEnding.AUTODETECT
-        print(f"Selected {repr(lineEndingFlavor)} line ending.")
-        if lineEndingFlavor == LineEnding.AUTODETECT:
-          lineEndingFlavor = determineLineEndingTypeInFile(userOptions[CONFIG_INPUT_FILE])
-          print(f"Detected {repr(lineEndingFlavor)} line ending in input G-code file.")
-          if lineEndingFlavor == LineEnding.UNKNOWN:
-            lineEndingFlavor = LineEnding.UNIX
-            print(f"Defaulting to {LINE_ENDING_UNIX_TITLE}")
+        print(f"User selected {repr(lineEndingFlavor)} line ending.")
 
         mfmConfig = MFMConfiguration()
         mfmConfig[CONFIG_GCODE_FLAVOR] = MARLIN_2_BAMBU_PRUSA_MARKED_GCODE
@@ -314,7 +316,23 @@ class App(tk.Tk):
         mfmConfig[CONFIG_LINE_ENDING] = lineEndingFlavor.value
         mfmConfig[CONFIG_APP_NAME] = APP_NAME
         mfmConfig[CONFIG_APP_VERSION] = APP_VERSION
-        process(mfmConfig, statusQueue)
+        
+        # Process based on GCODE or 3MF
+        _, inputFileExtension = os.path.splitext(userOptions.get(CONFIG_INPUT_FILE))
+        
+        if inputFileExtension.lower() == FileExtensions.GCODE.value:
+          if lineEndingFlavor == LineEnding.AUTODETECT:
+            with open(userOptions[CONFIG_INPUT_FILE], mode='rb') as f:
+              lineEndingFlavor = determineLineEndingTypeInFile(fb=f)
+            print(f"Detected {repr(lineEndingFlavor)} line ending in input file {userOptions[CONFIG_INPUT_FILE]}.")
+            if lineEndingFlavor == LineEnding.UNKNOWN:
+              lineEndingFlavor = LineEnding.UNIX
+              print(f"Defaulting to {LINE_ENDING_UNIX_TITLE}")
+        
+          process(configuration=mfmConfig, inputFP=open(userOptions[CONFIG_INPUT_FILE], mode='r'), outputFP=open(userOptions[CONFIG_OUTPUT_FILE], mode='w'), statusQueue=statusQueue)
+        elif inputFileExtension.lower() == FileExtensions.THREEMF.value:
+          with zipFilePointerForZip(zipPath=userOptions.get(CONFIG_INPUT_FILE), write=False) as inputZipFile, open(userOptions[CONFIG_OUTPUT_FILE], mode='wb') as outputZipFileFP:
+            processAllPlateGcodeForZipFile(inputZip=inputZipFile, out=outputZipFileFP, configuration=mfmConfig, statusQueue=statusQueue)
 
       startPostProcessButton["state"] = "disabled"
 

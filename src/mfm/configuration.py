@@ -6,6 +6,7 @@ from .printing_classes import PeriodicColor, ReplacementColorAtHeight
 
 # Only export MFMConfiguration and not any imported values
 #__all__ = ['MFMConfiguration']
+MFM_EXPORT_FILE_SUFFIX = 'MFM-export'
 
 MODEL_TO_REAL_WORLD_DEFAULT_UNITS = 'modelToRealWorldDefaultUnits'
 MODEL_ONE_TO_N_VERTICAL_SCALE = 'modelOneToNVerticalScale'

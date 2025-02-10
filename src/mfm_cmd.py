@@ -1,33 +1,40 @@
-import argparse, enum, shutil, os, logging, sys, threading
+import argparse
+import enum
+import shutil
+import os
+import logging
+import sys
+import threading
 
 from mfm.line_ending import *
 from mfm.map_post_process import *
 
 class LineEndingCommandLineParameter(enum.Enum):
-  AUTODETECT = "AUTO"
-  WINDOWS = "WINDOWS"
-  UNIX = "UNIX"
+    AUTODETECT = "AUTO"
+    WINDOWS = "WINDOWS"
+    UNIX = "UNIX"
 
 TEMP_OUTPUT_GCODE_FILE = 'mfm-output.gcode'
 
-#python ./src/mfm_cmd.py ./sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -o dice-export.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
+# python ./src/mfm_cmd.py ./sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -o dice-export.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
 
-#python ./src/mfm_cmd.py "C:\Users\ansonl\Downloads\Die and Dots_PLA_3h21m.gcode" -o dice-export.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
+# python ./src/mfm_cmd.py "C:\Users\ansonl\Downloads\Die and Dots_PLA_3h21m.gcode" -o dice-export.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
 
 # Mac Slicer Post processing
-#/usr/local/bin/python3 ~/development/topo-map-post-processing/src/mfm_cmd.py ~/development/topo-map-post-processing/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ~/development/topo-map-post-processing/sample_models/dual_color_dice/config-dice-test.json -t ~/development/topo-map-post-processing/minimal_toolchanges/bambu-p1-series.gcode
+# /usr/local/bin/python3 ~/development/topo-map-post-processing/src/mfm_cmd.py ~/development/topo-map-post-processing/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ~/development/topo-map-post-processing/sample_models/dual_color_dice/config-dice-test.json -t ~/development/topo-map-post-processing/minimal_toolchanges/bambu-p1-series.gcode
 
 # Mac Slicer Post processing (general)
-#python3 ~/src/mfm_cmd.py ~/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
+# python3 ~/src/mfm_cmd.py ~/sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode -c ./sample_models/dual_color_dice/config-dice-test.json -t ./minimal_toolchanges/bambu-p1-series.gcode
 
 # Slicer Post-processing Scripts (general)
-#"PYTHONPATH/python3.11.exe" "SCRIPTPATH/mfm_cmd.py" -c "OPTIONSPATH/options.json" -t "TOOLCHANGEPATH/toolchange.gcode";
+# "PYTHONPATH/python3.11.exe" "SCRIPTPATH/mfm_cmd.py" -c "OPTIONSPATH/options.json" -t "TOOLCHANGEPATH/toolchange.gcode";
 
 # Slicer Post-processing Scripts (windows) (put project folder in user home folder)
-#"C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\python3.11.exe" "C:\Users\USERNAME\topo-map-post-processing\src\mfm_cmd.py" -c "C:\Users\USERNAME\topo-map-post-processing\sample_models\dual_color_dice\config-dice-test.json" -t "C:\Users\USERNAME\topo-map-post-processing\minimal_toolchanges\bambu-p1-series.gcode";
+# "C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\python3.11.exe" "C:\Users\USERNAME\topo-map-post-processing\src\mfm_cmd.py" -c "C:\Users\USERNAME\topo-map-post-processing\sample_models\dual_color_dice\config-dice-test.json" -t "C:\Users\USERNAME\topo-map-post-processing\minimal_toolchanges\bambu-p1-series.gcode";
 
 def setupLogging():
-    redirectSTDERR = open(os.path.join(os.path.expanduser('~'), 'mfm-script-stderr.log'), "w")
+    redirectSTDERR = open(os.path.join(
+        os.path.expanduser('~'), 'mfm-script-stderr.log'), "w")
     sys.stderr.write = redirectSTDERR.write
 
     '''
@@ -37,11 +44,12 @@ def setupLogging():
 
     log_file_path = os.path.join(os.path.expanduser('~'), 'mfm-script.log')
     try:
-        logging.basicConfig(level=logging.DEBUG, 
-            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s', filename=log_file_path, filemode='w')
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s', filename=log_file_path, filemode='w')
         console = logging.StreamHandler(stream=sys.stdout)
         console.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+        formatter = logging.Formatter(
+            '%(name)-12s: %(levelname)-8s %(message)s')
         console.setFormatter(formatter)
         logging.getLogger('').addHandler(console)
         logging.getLogger('').setLevel(logging.DEBUG)
@@ -50,10 +58,12 @@ def setupLogging():
 
     logging.info(f"Logging started")
 
+
 def runScript():
 
     # Set up status queue
     statusQueue: queue.Queue[StatusQueueItem] = queue.Queue()
+
     def worker():
         while True:
             item = statusQueue.get()
@@ -74,13 +84,18 @@ def runScript():
         epilog='Report issues and contribute at https://github.com/ansonl/mfm'
     )
     parser.add_argument('input_gcode', type=str, help='Input G-code file')
-    parser.add_argument('-o', '--output_gcode', help='Output G-code file. Overwrite Input G-code file if no output provided.')
-    parser.add_argument('-c', '--config', required=True, help='Options configuration JSON file')
-    parser.add_argument('-t', '--toolchange', required=True, help='Toolchange G-code file')
-    parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT.value, LineEndingCommandLineParameter.WINDOWS.value, LineEndingCommandLineParameter.UNIX.value], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
-    parser.add_argument('--disable', type=int, choices=[0,1], default=0, help='Disable post processing')
-    
-    args =  parser.parse_args()
+    parser.add_argument('-o', '--output_gcode',
+                        help='Output G-code file. Overwrite Input G-code file if no output provided.')
+    parser.add_argument('-c', '--config', required=True,
+                        help='Options configuration JSON file')
+    parser.add_argument('-t', '--toolchange', required=True,
+                        help='Toolchange G-code file')
+    parser.add_argument('-le', choices=[LineEndingCommandLineParameter.AUTODETECT.value, LineEndingCommandLineParameter.WINDOWS.value,
+                        LineEndingCommandLineParameter.UNIX.value], default=LineEndingCommandLineParameter.AUTODETECT, help='Line ending style')
+    parser.add_argument('--disable', type=int,
+                        choices=[0, 1], default=0, help='Disable post processing')
+
+    args = parser.parse_args()
     logging.info(f'Parsed args {args}')
 
     inputGcodeFile = args.input_gcode
@@ -89,8 +104,8 @@ def runScript():
     toolchangeFile = args.toolchange
     lineEndingFlavor = args.le
     disable = args.disable
-    
-    if outputGcodeFile == None:     
+
+    if outputGcodeFile == None:
         outputGcodeFile = TEMP_OUTPUT_GCODE_FILE
         status = f"No Output G-code file provided. Temp output at {outputGcodeFile}. input file will be replaced by temp file."
         logging.info(status)
@@ -100,7 +115,8 @@ def runScript():
 
     # Load Options from JSON file
     userOptions = {}
-    loadOptionsError = readUserOptions(userOptions=userOptions, optionsFilename=configFile)
+    loadOptionsError = readUserOptions(
+        userOptions=userOptions, optionsFilename=configFile)
     if loadOptionsError != None:
         status = f'Config JSON file could not be parsed. {loadOptionsError}'
         logging.error(status)
@@ -111,9 +127,9 @@ def runScript():
     periodicColors = parsePeriodicColors(userOptions=userOptions)
     replacementColors = parseReplacementColors(userOptions=userOptions)
     extraPurgePrevColors = parseExtraPurgePrevColors(userOptions=userOptions)
-    
+
     # Determine line ending
-    if lineEndingFlavor == LineEndingCommandLineParameter.AUTODETECT: 
+    if lineEndingFlavor == LineEndingCommandLineParameter.AUTODETECT:
         lineEndingFlavor = LineEnding.AUTODETECT
     if lineEndingFlavor == LineEndingCommandLineParameter.WINDOWS:
         lineEndingFlavor = LineEnding.WINDOWS
@@ -125,7 +141,8 @@ def runScript():
     status = f"User selected {repr(lineEndingFlavor)} line ending."
     logging.info(status)
     if lineEndingFlavor == LineEnding.AUTODETECT:
-        lineEndingFlavor = determineLineEndingTypeInFile(inputGcodeFile)
+        with open(inputGcodeFile, mode='rb') as f:
+            lineEndingFlavor = determineLineEndingTypeInFile(fb=f)
         status = f"Detected {repr(lineEndingFlavor)} line ending in input G-code file."
         logging.info(status)
         if lineEndingFlavor == LineEnding.UNKNOWN:
@@ -152,7 +169,8 @@ def runScript():
     mfmConfig[CONFIG_APP_NAME] = APP_NAME
     mfmConfig[CONFIG_APP_VERSION] = APP_VERSION
 
-    process(configuration=mfmConfig, statusQueue=statusQueue)
+    process(configuration=mfmConfig, inputFP=open(mfmConfig[CONFIG_INPUT_FILE], mode='r'), outputFP=open(
+        mfmConfig[CONFIG_OUTPUT_FILE], mode='w'), statusQueue=statusQueue)
 
     status = f'Wrote output G-code to {outputGcodeFile}\n'
     logging.info(status)
@@ -162,6 +180,7 @@ def runScript():
         shutil.move(TEMP_OUTPUT_GCODE_FILE, inputGcodeFile)
         status = f'Moved temp output G-code to {inputGcodeFile}\n'
         logging.info(status)
+
 
 if __name__ == "__main__":
 
