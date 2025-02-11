@@ -1,16 +1,42 @@
 # Printer Setup for MFM
 
-You need to find a way to execute the G-code on your 3D printer.
+You need to find a way to print the G-code on your 3D printer.
 
-## Sending G-code to the 3D printer
+## Sending G-code and Plate Sliced 3MF to the 3D printer
+
+There are 2 options: Plate Sliced 3MF (G-code embedded 3MF) (preferred) and G-code
 
 ### Most 3D Printers
 
-For most 3D printers you can send or stream G-code directly to your printer with a USB or network serial connection.
+For most 3D printers you can send or stream G-code directly to your printer with a USB or network serial connection. This feature is usually built into your slicer and you just import your G-code or 3MF file and click **Print**.
 
 You can also copy G-code to an SD card that you put into the printer.
 
+#### Plate Sliced 3MF
+
+1. Make sure your slicer project has at least 4 distinct filament colors enabled.
+
+2. Export your original project as a Plate Sliced 3MF with File > Export > **Export all plate sliced file**.
+
+3. Run MFM with the plate sliced 3MF as the input file.
+
+4. Import the processed plate sliced 3MF in the Bambu Studio or OrcaSlicer.
+
+5. Click **Print plate**
+
+6. Select Bed Leveling and Timelapse as needed. Remap your AMS or multimaterial system if supported. Make sure you do not have duplicated materials across the slots as described in [Material Auto Refill](#material-auto-refill).
+
+#### G-code
+
+1. Export your original G-code from the slicer.
+
+2. Run MFM with the G-code as the input file.
+
+3. Import the processed plate sliced 3MF in the Bambu Studio or OrcaSlicer and click **Print**.
+
 ### Bambu Lab Printers
+
+I recommend using the [Plate Sliced 3MF](#plate-sliced-3mf) method due to Bambu's overly restrictive limits on LAN mode.
 
 Bambu Studio allows you to **Send** previewed G-code to Bambu Lab printers over a network connection. You can print the sent G-code on the Bambu printer screen itself after ensuring the colors are physically located in the correct AMS slots.
 

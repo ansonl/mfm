@@ -53,6 +53,7 @@ def processAllPlateGcodeForZipFile(inputZip: zipfile.ZipFile, out: typing.TextIO
           process(configuration=configuration, inputFP=gcodeText, outputFP=tmpGcodeFile, statusQueue=statusQueue)
         
         # Zipfile implementation of seek is too slow because it restarts from start of file each time
+        # https://stackoverflow.com/questions/51801213/complexity-of-f-seek-in-python/51801243
         #process(configuration=configuration, inputFP=io.TextIOWrapper(inputZip.open(zi.filename, mode='r')), outputFP=tmpGcodeFile, statusQueue=statusQueue)
         
         new_archive.write(tmpGcodeFilename, arcname=item.filename)

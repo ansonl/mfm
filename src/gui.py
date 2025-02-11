@@ -164,7 +164,7 @@ class App(tk.Tk):
     importLabel.grid(row=1, column=0, sticky=tk.W, padx=10)
     importGcodeButton = tk.Button(
       master=self,
-      text='Select G-code / Plate Sliced 3MF (G-code embedded)',
+      text='Select G-code / Plate Sliced 3MF',
       command=selectImportGcodeFile
     )
     importGcodeButton.grid(row=1, column=1, sticky=tk.EW, padx=10, pady=5)
