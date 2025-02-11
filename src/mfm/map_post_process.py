@@ -717,13 +717,8 @@ def process(configuration: MFMConfiguration, inputFP: typing.TextIO, outputFP: t
           # Save current pos for restore since findChangeLayer() will change pos
           cp = f.tell()
 
-          if currentPrint.height == 2.0:
-            0==0
-
           foundNewLayer = findChangeLayer(f,lastPrintState=currentPrint, gf=configuration[CONFIG_GCODE_FLAVOR], pcs=configuration[CONFIG_PERIODIC_COLORS], rcs=configuration[CONFIG_REPLACEMENT_COLORS], le=configuration[CONFIG_LINE_ENDING])
           if foundNewLayer:
-            if foundNewLayer.height == 4.6:
-              0==0
             currentPrint = foundNewLayer
 
             if statusQueue:

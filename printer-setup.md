@@ -38,6 +38,12 @@ Start G-code file using the printer display or an MQTT integration.
 
 > The actual physical material and colors loaded do not need to be different or accurately reflected in the printer screen or slicer Device tab. Only the material/color shown on the printer or Device tab need to be distinct from each other.
 
+### Bambu AMS out of filament behavior
+
+If you want to swap/save filament by changing out filament in the same AMS slot, you should swap the filament from the AMS slot when it is **not** the active filament.
+
+When the active filament is detected as "run out" by the AMS, the printer will purge the ENTIRE filament tube of filament all the way from the AMS to the extruder. This is a huge waste of material and should be avoided. This behavior is probably because backing out filament that ends inside the first stage feeder is considered unreliable by Bambu.
+
 ## Timelapse
 
 ### Bambu Studio
