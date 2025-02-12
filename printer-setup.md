@@ -14,7 +14,7 @@ You can also copy G-code to an SD card that you put into the printer.
 
 #### Plate Sliced 3MF
 
-1. Make sure your slicer project has at least 4 distinct filament colors enabled.
+1. Make sure your slicer project has at least 4 distinct filament colors enabled that correspond to the color indices used by MFM.
 
 2. Export your original project as a Plate Sliced 3MF with File > Export > **Export all plate sliced file**.
 

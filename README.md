@@ -26,7 +26,7 @@ Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/
 
 ![map feature gcode post processing screenshot](/assets/gui_screenshot.png)
 
-If you find this tool helpful, please leave feedback and consider supporting my development and 3D modeling with a [Printables](https://www.printables.com/@ansonl) "club membership" or [Paypal](https://paypal.me/0x80).
+If you find this tool helpful, please leave feedback and consider supporting my development and 3D modeling with a [Printables](https://www.printables.com/@ansonl) "club membership" or a one-time [Paypal](https://paypal.me/0x80) contribution.
 
 My 3D topo and other models are on [MakerWorld](https://makerworld.com/en/@ansonl) and [Printables](https://www.printables.com/@ansonl).
 

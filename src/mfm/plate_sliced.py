@@ -20,9 +20,11 @@ def zipFilePointerForZip(zipPath: str, write: bool):
 
 # Adapted from https://medium.com/dev-bits/ultimate-guide-for-working-with-i-o-streams-and-zip-archives-in-python-3-6f3cf96dca50
 def processAllPlateGcodeForZipFile(inputZip: zipfile.ZipFile, out: typing.TextIO, configuration: MFMConfiguration, statusQueue: queue.Queue):
+  startTime = time.monotonic()
   new_zip = io.BytesIO()
 
   with zipfile.ZipFile(new_zip, 'w') as new_archive:
+    platesProcessed = 0
     for item in inputZip.filelist:
       # If you spot an existing file, create a new object
       if re.match(PLATE_N, os.path.basename(item.filename)):
@@ -56,12 +58,41 @@ def processAllPlateGcodeForZipFile(inputZip: zipfile.ZipFile, out: typing.TextIO
         # https://stackoverflow.com/questions/51801213/complexity-of-f-seek-in-python/51801243
         #process(configuration=configuration, inputFP=io.TextIOWrapper(inputZip.open(zi.filename, mode='r')), outputFP=tmpGcodeFile, statusQueue=statusQueue)
         
-        new_archive.write(tmpGcodeFilename, arcname=item.filename)
+        if statusQueue:
+          sqItem = StatusQueueItem()
+          sqItem.statusLeft = f"{os.path.basename(item.filename)}"
+          sqItem.statusRight = f"Compressing"
+          sqItem.progress = 50
+          statusQueue.put(item=sqItem)
+        
+        new_archive.write(tmpGcodeFilename, arcname=item.filename, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+        platesProcessed += 1
       else:
+        if statusQueue:
+          sqItem = StatusQueueItem()
+          sqItem.statusLeft = f"{os.path.basename(item.filename)}"
+          sqItem.statusRight = f"Compressing"
+          sqItem.progress = 50
+          statusQueue.put(item=sqItem)
+        
         # Copy other contents as it is
-        new_archive.writestr(item, inputZip.read(item.filename))
+        # Bambu Studio only supports DEFLATE compression
+        new_archive.writestr(item, inputZip.read(item.filename), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+
+  if statusQueue:
+    sqItem = StatusQueueItem()
+    sqItem.statusLeft = f"{os.path.basename(configuration[CONFIG_INPUT_FILE])}"
+    sqItem.statusRight = f"Saving"
+    sqItem.progress = 75
+    statusQueue.put(item=sqItem)
 
   out.write(new_zip.getbuffer())
+  
+  if statusQueue:
+    sqItem = StatusQueueItem()
+    sqItem.statusRight = f"Completed all {platesProcessed} plate sliced gcode{'s' if platesProcessed > 0 else ''} in {str(datetime.timedelta(seconds=time.monotonic()-startTime))}s" if platesProcessed > 0 else "Did not find plate sliced gcode"
+    sqItem.progress = 100
+    statusQueue.put(item=sqItem)
 
 def allPlateGcodeFilePointersForZipFile(z: zipfile.ZipFile) -> list[typing.TextIO]:
   plateGcodeFilePointers = []
