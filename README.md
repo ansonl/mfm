@@ -61,17 +61,9 @@ Set up your slicer and printer for MFM by following the steps on each page below
 
 ## Running MFM Post-processor
 
-After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Script/Python Script (most updated) or Graphical App:
+After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Script/Python Script or Graphical App:
 
-### Slicer Post-processor Script or Python Script in Command Line
-
-1. Add `mfm_cmd.py` command with the [listed parameters](terminal-setup.md) to slicer **Post-processing Scripts** setting.
-
-2. **Slice** your model.
-
-3. **Export Plate Sliced 3MF/G-code file** under the Print button in the upper right or File menu.
-
-> If you update the MFM Options file, you may need to add/delete a space at the end of the slicer **Post-processing Scripts** setting to get the slicer to allow reslicing.
+![MFM 3D map model app](./assets/icon.svg)
 
 ### Graphical App (GUI)
 
@@ -89,7 +81,17 @@ Download the [latest GUI release of MFM](https://github.com/ansonl/mfm/releases)
 
 > If a release of MFM has not been built for your OS, you can launch the GUI by [downloading the code](https://github.com/ansonl/mfm/archive/refs/heads/master.zip), navigate to the code folder in the command line and run `python src/gui.py`.
 
-> ⚠️ **The first color change may be set to the wrong color.** If the first color change is incorrect, open the G-code in a text editor and search for `TX` (e.g. `T3`) where `X` is the wrong color index and **replace the first match of `T3` with `T0`** or desired base starting color index. This issue randomly occurs ~50% of the time due to a known 10+ year old Windows Python [bug](https://stackoverflow.com/questions/15934950/python-file-tell-giving-strange-numbers).
+### Slicer Post-processor Script or Python Script in Command Line
+
+1. Add `mfm_cmd.py` command with the [listed parameters](terminal-setup.md) to slicer **Post-processing Scripts** setting.
+
+2. **Slice** your model.
+
+3. **Export Plate Sliced 3MF/G-code file** under the Print button in the upper right or File menu.
+
+> If you update the MFM Options file, you may need to add/delete a space at the end of the slicer **Post-processing Scripts** setting to get the slicer to allow reslicing.
+
+> ⚠️ **Known bug: The first color change may be set to the wrong color.** If the first color change is incorrect, open the G-code in a text editor and search for `TX` (e.g. `T3`) where `X` is the wrong color index and **replace the first match of `T3` with `T0`** or desired base starting color index. This issue randomly occurs ~50% of the time due to a known 10+ year old Windows Python [bug](https://stackoverflow.com/questions/15934950/python-file-tell-giving-strange-numbers).
 
 ### Printing Your Processed 3MF/G-code
 
