@@ -22,7 +22,7 @@ Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/
 
 - **Slicer Compatibility** - Tested to be compatible with PrusaSlicer, Bambu Studio, and OrcaSlicer. Supports G-code and Plate Sliced 3MF.
 
-- **G-code Gadgets** - MFM's G-code parser has an advantage over other post-processers because it organizes existing G-code features into reusable segments similar to [gadgets](https://en.wikipedia.org/wiki/Return-oriented_programming) which are rearranged and chained for printing efficiency.
+- **G-code Gadgets** - MFM's G-code parser has an advantage over other post-processers because it organizes existing G-code features into reusable segments similar to [gadgets](https://www.youtube.com/watch?v=ajGX7odA87k&t=1868s) which are rearranged and chained for printing efficiency.
 
 ![map feature gcode post processing screenshot](/assets/gui_screenshot.png)
 
