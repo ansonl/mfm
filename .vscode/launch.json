@@ -29,6 +29,14 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Python Debugger: CMD custom file2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/mfm_cmd.py",
+            "args": ["C:/Users/ansonl/development/topo-map-post-processing/column.gcode", "-o", "dice-export.gcode", "-c", "./premade_options/1to1.json", "-t", "./minimal_toolchanges/bambu-x1-p1-series-long-retraction-107mm3-flush.gcode"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python Debugger: CMD overwrite input",
             "type": "debugpy",
             "request": "launch",

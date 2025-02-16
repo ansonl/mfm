@@ -58,7 +58,7 @@ TOOLCHANGE_START = '^; CP TOOLCHANGE START'
 
 # Toolchange
 M620 = '^M620 S(\d*)A'
-TOOLCHANGE_T = '^T(?!255$|1000|1100$)(\d+)' # Do not match T255,T1000,T1100 which are nonstandard by Bambu. We do not change tabbed T commands. There is a bug where the file pointer will jump to the beginning.
+TOOLCHANGE_T = '^\s*T(?!255$|1000|1100$)(\d+)' # Do not match T255,T1000,T1100 which are nonstandard by Bambu. We do not change tabbed T commands. There is a bug where the file pointer will jump to the beginning. This regex needs to handle whitespace in beginning to get the initial AMS toolchange
 M621 = '^M621 S(\d*)A'
 EXTRA_PURGE_INSERTION = '; EXTRA_PURGE_INSERTION'
 EXTRA_PURGE_INSERTION_RE = f'^{EXTRA_PURGE_INSERTION}'
