@@ -69,7 +69,7 @@ After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Sc
 
 2. **Slice** your model.
 
-3. **Export G-code file** under the Print button in the upper right.
+3. **Export Plate Sliced 3MF/G-code file** under the Print button in the upper right or File menu.
 
 > If you update the MFM Options file, you may need to add/delete a space at the end of the slicer **Post-processing Scripts** setting to get the slicer to allow reslicing.
 
@@ -77,25 +77,31 @@ After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Sc
 
 Download the [latest GUI release of MFM](https://github.com/ansonl/mfm/releases) and run `MFM.exe` to start MFM.
 
-1. Select the import G-code file that was exported from your slicer
+1. Select the [import Plate Sliced 3MF or G-code](./slicer-setup.md) that was exported from your slicer
 
-2. Select the Options JSON file for your map model.
+2. Select the [MFM Options JSON](./mfm-configuration-options-setup.md) for your model.
 
-3. Select the toolchange G-code file for your printer.
+3. Select the [toolchange G-code](./minimal-toolchange-gcode.md) for your printer.
 
-4. Check if the export G-code file location looks right
+4. Check if the exported 3MF or G-code file location looks right
 
 5. Press **Post Process**
 
 > If a release of MFM has not been built for your OS, you can launch the GUI by [downloading the code](https://github.com/ansonl/mfm/archive/refs/heads/master.zip), navigate to the code folder in the command line and run `python src/gui.py`.
 
-> ⚠️ **The first color change may be set to the wrong color.** If the first color change is incorrect, open the G-code in a text editor and search for `TX` (e.g. `T3`) where `X` is the wrong color index and **replace the first match of `T3` with `T0`** or desired base starting color index. This issue occurs about 50% of the time due to a known 10+ year old Windows Python [bug](https://stackoverflow.com/questions/15934950/python-file-tell-giving-strange-numbers).
+> ⚠️ **The first color change may be set to the wrong color.** If the first color change is incorrect, open the G-code in a text editor and search for `TX` (e.g. `T3`) where `X` is the wrong color index and **replace the first match of `T3` with `T0`** or desired base starting color index. This issue randomly occurs ~50% of the time due to a known 10+ year old Windows Python [bug](https://stackoverflow.com/questions/15934950/python-file-tell-giving-strange-numbers).
 
-### Printing the G-code file
+### Printing Your Processed 3MF/G-code
 
-Put the G-code file exported by your Slicer or MFM on an SD card and put the SD card in your 3D printer or transfer the G-code file to your printer over the network. 
+#### Plate Sliced 3MF
 
-Bambu printer users can use [FTPS](https://forum.bambulab.com/t/we-can-now-connect-to-ftp-on-the-p1-and-a1-series/6464) for wireless transfer.
+Open the processed 3MF in your slicer and **Send/Print** to your printer.
+
+#### G-code
+
+Place the processed G-code file an SD card and put the SD card in your 3D printer or transfer the G-code file to your printer over a network.
+
+See [Printer Setup](./printer-setup.md) for more options and important set up steps.
 
 ## Frequently Asked Questions
 
