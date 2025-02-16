@@ -2,11 +2,13 @@
 
 **Use Premade Options in [premade_options](./premade_options/) for the [3D printable map models](https://ansonliu.com/maps/) collection.**
 
-The options file is formatted as a JSON dictionary with the following keys. 
-
 Options values are provided for each [3D printable map model](https://ansonliu.com/maps/) on the [specifications page](https://ansonliu.com/maps/specifications/).
 
-You can test configurations with the sample dual color dice G-code files in the `sample_models` folder.
+> You can create 1:1 isolines without scaling applied by referencing `1to1.json`. This is useful for non-map models.
+
+You can test configurations with the sample dual color dice or tall cuboid model and G-code in the `sample_models` folder.
+
+The options file is formatted as a JSON dictionary with the following keys.
 
 ## Color Assignment
 
