@@ -90,7 +90,7 @@ def processAllPlateGcodeForZipFile(inputZip: zipfile.ZipFile, out: typing.TextIO
   
   if statusQueue:
     sqItem = StatusQueueItem()
-    sqItem.statusRight = f"Completed all {platesProcessed} plate sliced gcode{'s' if platesProcessed > 0 else ''} in {str(datetime.timedelta(seconds=time.monotonic()-startTime))}s" if platesProcessed > 0 else "Did not find plate sliced gcode"
+    sqItem.statusRight = f"Completed all {platesProcessed} plate sliced G-code{'s' if platesProcessed > 0 else ''} in {str(datetime.timedelta(seconds=time.monotonic()-startTime))}s" if platesProcessed > 0 else "Did not find any plate sliced G-code to process."
     sqItem.progress = 100
     statusQueue.put(item=sqItem)
 

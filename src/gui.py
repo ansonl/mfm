@@ -113,7 +113,7 @@ class App(tk.Tk):
     gcodeFlavorComboBox.grid(row=0, column=1, sticky=tk.EW, padx=10, pady=10)
 
     def selectImportGcodeFile():
-      fn = select_open_file([('All supported files', '.gcode .gcode.3mf'), ('G-code', '*.gcode'), ('Plate Sliced 3MF', '*.gcode.3mf')])
+      fn = select_open_file([('All supported files', '.gcode .gcode.3mf .3mf'), ('G-code', '*.gcode'), ('Plate Sliced 3MF', '*.gcode.3mf'), ('3MF', '*.3mf')])
       if fn:
         importGcodeButton.config(text=truncateMiddleLength(fn, 50))
         exportFn = addExportToFilename(fn)
