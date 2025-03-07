@@ -4,6 +4,9 @@
 
 Add colored [isolines (contour lines/elevation lines)](https://en.wikipedia.org/wiki/Contour_line) and recolor [elevation ranges](https://desktop.arcgis.com/en/arcmap/latest/map/styles-and-symbols/working-with-color-ramps.htm) to [3D printable map models](https://ansonliu.com/maps/). **3D G-code Map Feature Modifier (MFM)** is a G-code Post Processor made for 3D topo map models but any 3D model can be recolored with 2 additional colors.
 
+[![Tutorial video](assets/thumbnail-360p.png)](https://www.youtube.com/watch?v=3BnW-QVdqKM "Add Elevation Contour Lines to Topo Maps - 3D Printing Guide!")
+: ↑ MFM Tutorial video
+
 **Use the latest version of MFM in 1 of the following 3 ways → [Getting Started](#getting-started)**
 
 - [MFM App](https://github.com/ansonl/mfm/releases) - Easiest to use and get started with a graphical user interface. Supports G-code and Plate Sliced 3MF (G-code embedded 3MF). Precompiled for Windows/Linux/Mac
