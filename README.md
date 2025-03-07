@@ -66,7 +66,7 @@ Set up your slicer and printer for MFM by following the steps on each page below
 
 After doing ALL above setup steps, you can run MFM as a Slicer Post-processor Script/Python Script or Graphical App:
 
-![MFM 3D map model app](./assets/icon.svg)
+![MFM 3D map model app](./assets/icon.png)
 
 ### Graphical App (GUI)
 
