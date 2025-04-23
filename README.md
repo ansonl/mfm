@@ -98,15 +98,19 @@ Download the [latest GUI release of MFM](https://github.com/ansonl/mfm/releases)
 
 ### Printing Your Processed 3MF/G-code
 
+See [Printer Setup](./printer-setup.md) for more options and important set up steps.
+
 #### Plate Sliced 3MF
 
-Open the processed 3MF in your slicer and **Send/Print** to your printer.
+1. Add missing filament entries to the `Metadata/slicer_info.config` file within the 3MF archive if using `Print` from the slicer. This is needed to avoid missing AMS mapping error on the printer.
+
+2. Open the processed 3MF in your slicer and **Send/Print** to your printer. 
 
 #### G-code
 
 Place the processed G-code file an SD card and put the SD card in your 3D printer or transfer the G-code file to your printer over a network.
 
-See [Printer Setup](./printer-setup.md) for more options and important set up steps.
+
 
 ## Frequently Asked Questions
 
