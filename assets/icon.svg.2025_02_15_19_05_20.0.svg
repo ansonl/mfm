@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733331 67.733331"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="icon.svg.2025_02_15_19_05_20.0.svg"
+   inkscape:export-filename="C:\Users\ansonl\development\topo-map-post-processing\assets\icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="2.319788"
+     inkscape:cx="115.95887"
+     inkscape:cy="143.5476"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter2595"
+       x="-0.032340469"
+       y="-0.12489599"
+       width="1.0646809"
+       height="1.249792">
+      <feFlood
+         flood-opacity="1"
+         flood-color="rgb(255,255,255)"
+         result="flood"
+         id="feFlood2585" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite2587" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="3"
+         result="blur"
+         id="feGaussianBlur2589" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset2591" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite2593" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="display:none;fill:#000000;fill-opacity:0.870057;stroke:#ffffff;stroke-width:1;stroke-linejoin:round;stroke-opacity:1"
+       id="rect5555"
+       width="97.585335"
+       height="97.907928"
+       x="-12.419952"
+       y="-16.775"
+       inkscape:label="test background" />
+    <path
+       style="fill:#ffcd29;fill-opacity:0.62;stroke:#ffffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.85"
+       d="M -1.6129808,60.486779 12.58125,53.55096 29.678847,60.809375 53.228364,48.550721 70.325961,56.454325 V 70.648557 H -1.6129808 Z"
+       id="path4803"
+       inkscape:label="bottom mountain" />
+    <path
+       style="fill:none;stroke:#d54646;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.95"
+       d="M 70.003366,64.196635 H -1.4516831"
+       id="path6873-0-1"
+       inkscape:label="contour line bottom" />
+    <path
+       style="fill:#2996ff;fill-opacity:0.8;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 29.678847,60.809375 c 0,0 8.171702,0.984983 12.465224,2.903365 7.581008,3.387259 26.29431,5.670912 26.29431,5.670912 L 37.630448,69.061057 c 0,0 0.597196,-3.574039 -3.596555,-4.541827 -2.200345,-0.507772 -4.355046,-3.709855 -4.355046,-3.709855 z"
+       id="path8422"
+       inkscape:label="river"
+       sodipodi:nodetypes="csccsc" />
+    <path
+       style="fill:none;stroke:#d54646;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.85"
+       d="m 41.776201,55.32524 h 4.915385 c 0,0 18.108967,1.30901 18.244727,-11.631509 C 65.029,34.858857 52.159818,31.255833 47.313779,16.706426"
+       id="path6873"
+       sodipodi:nodetypes="ccsc"
+       inkscape:label="nozzle extrusion" />
+    <path
+       id="rect13866"
+       style="fill:#c69400;fill-opacity:1;stroke:#ffffff;stroke-width:0.37629;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.6"
+       d="m 36.422378,6.6254442 0.153537,-5.24456 10.269378,0.067432 10.507793,-0.067432 -0.08488,5.24456 -9.143713,9.2968538 h -0.865141 -0.865141 z"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:label="nozzle tip" />
+    <g
+       id="g4023"
+       transform="translate(0.52916667,-1.5875)"
+       inkscape:label="nozzle top">
+      <path
+         id="rect13866-2"
+         style="fill:#b18300;fill-opacity:1;stroke:#423115;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.6"
+         d="m 32.501522,7.7739456 0.204014,-6.96876901 13.645552,0.0896 13.962348,-0.0896 -0.112781,6.96876901 -8.710229,3.9747024 H 46.37211 41.253794 Z"
+         sodipodi:nodetypes="ccccccccc" />
+      <path
+         id="rect3292"
+         style="fill:#d7a000;fill-opacity:1;stroke:#795115;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         d="M 41.401952,1.1405497 H 51.490426 V 11.748649 l -10.236632,-1e-6 z"
+         sodipodi:nodetypes="ccccc" />
+    </g>
+    <g
+       id="layer4"
+       inkscape:label="text short"
+       transform="matrix(0.20940984,0,0,0.20940984,-21.492925,12.066318)"
+       style="fill:#000000;stroke:#ffffff;stroke-opacity:1;filter:url(#filter2595)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:110.466px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2.7617;stroke-opacity:1"
+         x="105.01328"
+         y="165.24284"
+         id="text601"
+         transform="scale(1.1914204,0.83933429)"><tspan
+           sodipodi:role="line"
+           id="tspan599"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:110.466px;font-family:'BellTopo Sans';-inkscape-font-specification:'BellTopo Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:#ffffff;stroke-width:2.7617;stroke-opacity:1"
+           x="105.01328"
+           y="165.24284">MFM</tspan></text>
+    </g>
+  </g>
+</svg>
