@@ -19,6 +19,13 @@ You can also copy G-code to an SD card that you put into the printer.
 2. Export your original project as a Plate Sliced 3MF with File > Export > **Export all plate sliced file**.
 
 3. Run MFM with the plate sliced 3MF as the input file.
+  - In the later version of Bambu Studio, you must set up an AMS mapping for ALL (4) used color indexes or the printer will fail with an AMS mapping error at layer with the unmapped color! If the slicer does not show AMS mapping for all used colors, you can force it to show the 4 mappings by editing the 3MF archive's `/Metadata/slice_info.config` (open it with 7zip) and adding the missing filament indexes for EACH plate. An example of what the config should look like is below:
+  ```
+<filament id="1" tray_info_idx="GFL99" type="PLA" color="#808080" used_m="39.54" used_g="117.94" />
+<filament id="2" tray_info_idx="GFL99" type="PLA" color="#0080FF" used_m="8.67" used_g="25.87" />
+<filament id="3" tray_info_idx="GFL99" type="PLA" color="#FF0000" used_m="1" used_g="1" />
+<filament id="4" tray_info_idx="GFL99" type="PLA" color="#00FF00" used_m="1" used_g="1" />
+  ```
 
 4. Import the processed plate sliced 3MF in the Bambu Studio or OrcaSlicer.
 
