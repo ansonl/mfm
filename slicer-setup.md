@@ -125,3 +125,6 @@ Slicer generated toolchange flushing volumes are readily mixed between all tools
 2. Find the minimum flushing volume needed for any color change. This should be ~107mm³.
 
 3. If any color requires extra flushing volume beyond the minimum flushing volume, add that color index to the comma separated array for the key `extraPurgePreviousColors` the [MFM Config Option JSON file](mfm-configuration-options-setup.md). This will add an additional 150mm³ of flushing volume which can be increased by modifying the hard-coded flushing G-code in `mfm/extra_purge.py`.
+
+  > The default G-code for extra purging in `mfm/extra_purge.py` is made for the Bambu X1/P1 and you can modify that for your printer.
+  
