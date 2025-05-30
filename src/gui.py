@@ -328,6 +328,8 @@ class App(tk.Tk):
             if lineEndingFlavor == LineEnding.UNKNOWN:
               lineEndingFlavor = LineEnding.UNIX
               print(f"Defaulting to {LINE_ENDING_UNIX_TITLE}")
+              
+          mfmConfig[CONFIG_LINE_ENDING] = lineEndingFlavor.value
         
           process(configuration=mfmConfig, inputFP=open(userOptions[CONFIG_INPUT_FILE], mode='r'), outputFP=open(userOptions[CONFIG_OUTPUT_FILE], mode='w'), statusQueue=statusQueue)
         elif inputFileExtension.lower() == FileExtensions.THREEMF.value:
