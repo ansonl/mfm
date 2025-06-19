@@ -314,6 +314,11 @@ class App(tk.Tk):
         mfmConfig[CONFIG_REPLACEMENT_COLORS] = replacementColors
         mfmConfig[CONFIG_EXTRA_PURGE_COLORS] = extraPurgePrevColors
         mfmConfig[CONFIG_LINE_ENDING] = lineEndingFlavor.value
+        try:
+          mfmConfig[CONFIG_RESTORE_POSITION_FEEDRATE] = int(userOptions[RESTORE_POSITION_FEEDRATE])
+        except (KeyError, ValueError) as e:
+          print(f"No RESTORE_POSITION_FEEDRATE found in config.")
+          mfmConfig[CONFIG_RESTORE_POSITION_FEEDRATE] = -1
         mfmConfig[CONFIG_APP_NAME] = APP_NAME
         mfmConfig[CONFIG_APP_VERSION] = APP_VERSION
         

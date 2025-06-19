@@ -26,6 +26,8 @@ REPLACEMENT_ORIGINAL_COLOR_INDEX = 'replacementOriginalColorIndex'
 
 EXTRA_PURGE_PREV_COLORS = 'extraPurgePreviousColors'
 
+RESTORE_POSITION_FEEDRATE = 'restorePositionFeedrate'
+
 periodicColorRequiredOptions = [
   MODEL_TO_REAL_WORLD_DEFAULT_UNITS,
   MODEL_ONE_TO_N_VERTICAL_SCALE,

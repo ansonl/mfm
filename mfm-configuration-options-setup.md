@@ -94,6 +94,12 @@ A map processed with this set of options will have the following appearance:
 | -------- | ------- | ------- | ------- |
 | `extraPurgePreviousColors` | `[int]` | ≥0 | Tool indices to add extra purging to when that tool is the previous tool in a toolchange. |
 
+### Misc Options
+
+| Key | Value | Cardinality | Description |
+| -------- | ------- | ------- | ------- |
+| `restorePositionFeedrate` | `int` or `-1` | 1 | The feedrate to use when resuming between features. No value or `-1` will use the existing printing state feedrate when resuming. A high feedrate should be used for multi-nozzle printers. Feedrate is in mm/min. |
+
 ### Feature Types (Extrusion Roles)
 
 3D printed Feature Types are different categories used to define printing order and settings of printing travel and extrusion movements.

@@ -1,14 +1,15 @@
 ; MFM MINIMAL XL TOOLCHANGE START
-G1 E-15.37656 F2100
-; Filament-specific end gcode
 M104 S70 TYY ; set temperature ;cooldown
+M104 S170 TXX ; start heating up new nozzle
 
-; Change ToolYY -> ToolXX (layer 0)
+G1 E-20 F2100 ; retract
+
+; Change ToolYY -> ToolXX (MFM inserted)
 G1 F21000
-P0 S1 L2 D0
+P0 S1 M1 L2 D0 ; Park tool. Remove M1 to use tool mapping
 ;
 M109 S240 TXX ; YOUR PRINTING TEMP HERE
-TXX S1 L0 D0
+TXX M1 S1 L0 D0 ; Toolchange Remove M1 to use tool mapping
 
 
 M900 K0.05 ; Filament gcode ; YOUR CUSTOM LINEAR ADVANCE K VALUE HERE

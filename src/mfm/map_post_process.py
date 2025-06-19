@@ -529,7 +529,7 @@ def substituteNewColor(cl, newColorIndex: int):
   return cl
 
 # Write out a new feature
-def startNewFeature(gf: str, ps: PrintState, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor], curFeature: Feature, curFeatureIdx: int):
+def startNewFeature(gf: str, ps: PrintState, f: typing.TextIO, out: typing.TextIO, cl: str, toolchangeBareFile: str, pcs: list[PeriodicColor], curFeature: Feature, curFeatureIdx: int, resFeedrate: int):
   # remember if last line from last feature was supposed to be skipped
   prevFeatureSkip = False
   if ps.skipWrite:
@@ -572,8 +572,10 @@ def startNewFeature(gf: str, ps: PrintState, f: typing.TextIO, out: typing.TextI
       restoreCmd += f" Y{curFeature.startPosition.Y}"
       getattr(curFeature.startPosition, "Z")
       restoreCmd += f" Z{curFeature.startPosition.Z}"
-      getattr(curFeature.startPosition, "F")
-      restoreCmd += f" F{curFeature.startPosition.FTravel}"
+      if resFeedrate == -1:
+        getattr(curFeature.startPosition, "F")
+        resFeedrate = curFeature.startPosition.FTravel
+      restoreCmd += f" F{resFeedrate}"
     except AttributeError as e:
       print(f"Restore position did not find axis {e} yet")
     if len(restoreCmd) > len(MOVEMENT_G0):
@@ -775,7 +777,7 @@ def process(configuration: MFMConfiguration, inputFP: typing.TextIO, outputFP: t
               statusQueue.put(item=item)
 
             f.seek(curFeature.start, os.SEEK_SET) # Seek to the start of top feature in the feature list
-            startNewFeature(configuration[CONFIG_GCODE_FLAVOR], currentPrint, f, out, cl, configuration[CONFIG_TOOLCHANGE_MINIMAL_FILE], configuration[CONFIG_PERIODIC_COLORS], curFeature, curFeatureIdx)
+            startNewFeature(configuration[CONFIG_GCODE_FLAVOR], currentPrint, f, out, cl, configuration[CONFIG_TOOLCHANGE_MINIMAL_FILE], configuration[CONFIG_PERIODIC_COLORS], curFeature, curFeatureIdx, configuration[CONFIG_RESTORE_POSITION_FEEDRATE])
         
         # Start skip if feature.toolchange is reached and we marked feature as needing original toolchange skipped
         if curFeature and curFeature.skipType == SkipType.FEATURE_ORIG_TOOLCHANGE_AND_WIPE_END:
