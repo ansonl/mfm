@@ -1,4 +1,5 @@
 # Purge 150mm^3 of 1.75mm filament
+# This Gcode is only for Bambu X1/P1 printers. Customize the purge location and length for your own printer.
 EXTRA_PURGE_GCODE = """
 G91
 G1 X3 F12000; move aside to extrude

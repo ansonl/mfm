@@ -1,5 +1,5 @@
 ; This file is a reference file for the extra purge Gcode that is actually used in mfm/extra_purge.py
-
+; This Gcode is only for Bambu X1/P1 printers. Customize the purge location and length for your own printer.
 G91
 G1 X3 F12000; move aside to extrude
 G90
