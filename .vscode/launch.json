@@ -17,7 +17,15 @@
             "type": "debugpy",
             "request": "launch",
             "program": "src/mfm_cmd.py",
-            "args": ["./sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode", "-o", "dice-export.gcode", "-c", "./sample_models/dual_color_dice/config-dice-test.json", "-t", "./minimal_toolchanges/bambu-x1-p1-series-long-retraction-107mm3-flush.gcode", "--disable=0"],
+            "args": ["./sample_models/dual_color_dice/tests/dice_multiple_bambu_prime.gcode", "-o", "dice-export.gcode", "-c", "./sample_models/dual_color_dice/config-dice-test-multinozzle.json", "-t", "./minimal_toolchanges/bambu-x1-p1-series-150mm3-flush.gcode", "--disable=0"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: CMD prusa",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/mfm_cmd.py",
+            "args": ["./sample_models/dual_color_dice/tests/dice_multiple_prusa_prime.gcode", "-o", "dice-export.gcode", "-c", "./sample_models/dual_color_dice/config-dice-test-multinozzle.json", "-t", "./minimal_toolchanges/prusa-xl-series.gcode", "--disable=0"],
             "console": "integratedTerminal"
         },
         {
@@ -33,7 +41,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "src/mfm_cmd.py",
-            "args": ["C:/Users/ansonl/development/topo-map-post-processing/column.gcode", "-o", "dice-export.gcode", "-c", "./premade_options/1to1.json", "-t", "./minimal_toolchanges/bambu-x1-p1-series-long-retraction-107mm3-flush.gcode"],
+            "args": ["C:/Users/ansonl/Downloads/aero/Prusa-XL-co-linear-dual_0.4n_0.1mm_PLA_XLIS_1h15m.gcode", "-o", "prusaexport.gcode", "-c", "C:/Users/ansonl/Downloads/aero/USAofPlastic-dual-meters-Z200.json", "-t", "C:/Users/ansonl/Downloads/aero/prusa-xl-series.gcode"],
             "console": "integratedTerminal"
         },
         {
