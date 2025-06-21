@@ -375,7 +375,11 @@ def checkAndInsertToolchange(ps: PrintState, cf: Feature, f: typing.TextIO, out:
           skipWriteToolchange = True
 
         if skipWriteToolchange == False:
-          cl = substituteNewColor(cl, nextFeatureColor)
+          
+          if nextFeatureColor == 2 and ps.printingColor == 1:
+            0==0
+          
+          cl = substituteNewColor(cl, nextFeatureColor, ps.printingColor)
           writeWithFilters(out, cl, loadedColors)
          
         # Write Extra Purge Gcode if previous color needs it
@@ -522,9 +526,36 @@ def updatePrintState(ps: PrintState, cl: str, sw: bool, cp: int):
       ps.printingColor = int(toolchangeMatch.groups()[0]) #ps.originalColor
       print(f"found printing color toolchange to {int(toolchangeMatch.groups()[0])}")
 
-def substituteNewColor(cl, newColorIndex: int):
+def substituteNewColor(cl, newColorIndex: int, previousColorIndex: int = -1):
+  """Substitute a new/prev color into a string
+  
+  The T filter is only applied to M620, M621, TXXX, M104, and M109 commands.
+  
+  This function can be used in 2 modes, if previous color index is not specified, it always applies the 'new' color which can be either a color swap or color replacement depending on how `newColorIndex` is set.
+  
+  If `previousColorIndex` is supplied and the input string is a M104/M109 tagged as a cooldown, the previous color index is substituted. This should be used for color swap.
+  
+  `previousColorIndex` should not be supplied for color replacement.
+
+  :param cl: Input string
+  :type cl: str
+  :param newColorIndex: New color index
+  :type newColorIndex: int
+  :param previousColorIndex: Previous color index
+  :type previousColorIndex: int
+  
+  :return: String after substitution
+  :rtype: str
+  """
+  
   cl = re.sub(M620, f"M620 S{newColorIndex}A", cl)
-  cl = re.sub(TOOLCHANGE_T, f"T{newColorIndex}", cl)
+  
+  # substitute the prev color if previousColorIndex specified and line is a M104/M109 command tagged with ;cooldown
+  if previousColorIndex != -1 and re.match(M104M109_COOLDOWN, cl):
+    cl = re.sub(TOOL_T, f"T{previousColorIndex}", cl)
+  elif cl.startswith('T') or re.match(M104M109, cl): # only sub new color if T or M104/109 command
+    cl = re.sub(TOOL_T, f"T{newColorIndex}", cl)
+  
   cl = re.sub(M621, f"M621 S{newColorIndex}A", cl)
   return cl
 
@@ -639,17 +670,30 @@ def currentPrintingColorIndexForColorIndex(colorIndex: int, lc: list[PrintColor]
     return colorIndex
 
 def writeWithFilters(out: typing.TextIO, cl: str, lc: list[PrintColor]):
+  """Write a string to output after applying a T filter.
+  
+  The T filter is only applied to M620, M621, TXXX, M104, and M109 commands.
+
+  :param out: Output stream
+  :type out: typing.TextIO
+  :param cl: Input string
+  :type cl: str
+  :param lc: Print color list
+  :type lc: list[PrintColor]
+  """
   cmdColorIndex = -1
   #print(f"writewithcolorfilter {cl}")
   #look for color specific matches to find the original color to check for replacement colors
   m620Match = re.match(M620, cl)
-  toolchangeMatch = re.match(TOOLCHANGE_T, cl)
+  toolMatch = None
+  if cl.startswith('T') or re.match(M104M109, cl): # Only search for T in T or M104/109 commands
+    toolMatch = re.search(TOOL_T, cl) # search whole string because T can be parameter
   m621Match = re.match(M621, cl)
 
   if m620Match:
     cmdColorIndex = int(m620Match.groups()[0])
-  elif toolchangeMatch:
-    cmdColorIndex = int(toolchangeMatch.groups()[0])
+  elif toolMatch:
+    cmdColorIndex = int(toolMatch.groups()[0])
   elif m621Match:
     cmdColorIndex = int(m621Match.groups()[0])
 
