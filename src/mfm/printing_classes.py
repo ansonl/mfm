@@ -148,7 +148,8 @@ loadedColors: list[PrintColor] = [
   PrintColor(0, -1, 'Base Color'),
   PrintColor(1, -1, 'River Color'),
   PrintColor(2, -1, 'Isoline Color'),
-  PrintColor(3, -1, 'High Elevation Color')
+  PrintColor(3, -1, 'High Elevation Color'),
+  PrintColor(4, -1, 'Misc Color')
 ]
 """All loaded tools (colors)"""
 
