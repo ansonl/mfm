@@ -33,7 +33,9 @@ If you find this tool helpful, please leave feedback and consider supporting my 
 
 My 3D topo and other models are on [MakerWorld](https://makerworld.com/en/@ansonl) and [Printables](https://www.printables.com/@ansonl).
 
-## Current G-code flavors supported
+## Current Printers and G-code flavors supported
+
+- Tested successfully on Bambu X1/P1 and PrusaXL
 
 - Marlin 2 ([PrusaSlicer](https://github.com/prusa3d/PrusaSlicer)/[Bambu Studio](https://github.com/bambulab/BambuStudio)/[Orca Slicer](https://github.com/SoftFever/OrcaSlicer))
 
