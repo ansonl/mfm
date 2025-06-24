@@ -61,6 +61,18 @@ Use **Send** in Bambu Studio or [FTPS](https://forum.bambulab.com/t/we-can-now-c
 
 Start G-code file using the printer display or an MQTT integration.
 
+### Prusa Printers
+
+You must create small cubes (Right click > Add shape > cube, make the cube small 1mmx1mmx0.2mm) assigned to each color that you intend to use so that PrusaSlicer will create the Gcode comments needed for the Prusa firmware to populate the tool mapping.
+
+![Prusaslicer small cubes](assets/prusaslicer-small-cubes.webp)
+
+Ensure that all used tools show up in the Prusa printer's tool map before starting a print.
+
+![prusa toolmap](assets/prusaxl-toolmap.webp)
+
+If the tool is not shown in the Prusa printer screen's tool mapping, you will receive a tool mapping error and the print will fail. It is recommended to slice and post process the model with the actual tool indices that you intend to print with because the tool mapping can fail in unexpected ways. Remove `M1` from the Prusa minimal toolchange G-code if you do try to print with a changed tool map.
+
 ## Material Auto Refill
 
 ### Bambu AMS
